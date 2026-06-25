@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\ExpertiseFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,9 +16,10 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-
 class Expertise extends Model
 {
+    protected $table = 'expertises';
+
     protected $fillable = [
         'name',
         'description',

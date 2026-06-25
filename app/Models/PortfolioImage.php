@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -29,6 +30,25 @@ class PortfolioImage extends Model
         return [
             'sort_order' => 'integer',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::updating(function (PortfolioImage $image) {
+            if ($image->isDirty('image')) {
+                $oldPath = $image->getOriginal('image');
+
+                if ($oldPath) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+        });
+
+        static::deleted(function (PortfolioImage $image) {
+            if ($image->image) {
+                Storage::disk('public')->delete($image->image);
+            }
+        });
     }
 
     public function portfolio(): BelongsTo

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -22,6 +23,25 @@ class CurriculumVitae extends Model
     protected $fillable = ['name', 'version', 'file', 'is_active'];
 
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::updating(function (CurriculumVitae $cv) {
+            if ($cv->isDirty('file')) {
+                $oldPath = $cv->getOriginal('file');
+
+                if ($oldPath) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+        });
+
+        static::deleted(function (CurriculumVitae $cv) {
+            if ($cv->file) {
+                Storage::disk('public')->delete($cv->file);
+            }
+        });
+    }
 
     protected function casts(): array
     {

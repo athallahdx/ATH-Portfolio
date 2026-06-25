@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\DescriptionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -20,6 +19,5 @@ class Description extends Model
 
     protected $fillable = ['label', 'description'];
 
-    /** @use HasFactory<DescriptionFactory> */
     use HasFactory;
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -30,6 +31,25 @@ class Techstack extends Model
             'sort_order' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::updating(function (Techstack $techstack) {
+            if ($techstack->isDirty('icon')) {
+                $oldPath = $techstack->getOriginal('icon');
+
+                if ($oldPath) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+        });
+
+        static::deleted(function (Techstack $techstack) {
+            if ($techstack->icon) {
+                Storage::disk('public')->delete($techstack->icon);
+            }
+        });
     }
 
     public function portfolioTechstacks(): HasMany

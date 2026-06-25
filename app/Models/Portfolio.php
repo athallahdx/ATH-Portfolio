@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
@@ -58,8 +59,17 @@ class Portfolio extends Model
         return $this->hasMany(PortfolioImage::class);
     }
 
-    public function techstacks(): HasMany
+    public function techstacks(): BelongsToMany
     {
-        return $this->hasMany(PortfolioTechstack::class);
+        return $this->belongsToMany(
+            Techstack::class,
+            'portfolio_techstacks'
+        )->withTimestamps();
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'portfolio_tags')
+            ->withTimestamps();
     }
 }
