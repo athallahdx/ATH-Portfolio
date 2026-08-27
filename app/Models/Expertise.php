@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -23,6 +22,7 @@ class Expertise extends Model
     protected $fillable = [
         'name',
         'description',
+        'icon',
         'sort_order',
         'is_active',
     ];
@@ -35,10 +35,5 @@ class Expertise extends Model
             'sort_order' => 'integer',
             'is_active' => 'boolean',
         ];
-    }
-
-    public function elements(): HasMany
-    {
-        return $this->hasMany(ExpertiseElement::class);
     }
 }

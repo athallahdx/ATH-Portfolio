@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Portfolio;
-use App\Models\Expertise;
-use App\Models\CurriculumVitae;
-use App\Models\Contact;
-use App\Models\Techstack;
 use App\Models\AboutMe;
-use Illuminate\Http\Request;
+use App\Models\Contact;
+use App\Models\CurriculumVitae;
+use App\Models\Expertise;
+use App\Models\Portfolio;
+use App\Models\Techstack;
+use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
-        $portfolios = Portfolio::where('is_active', true)
+        $portfolios = Portfolio::with(['techstacks', 'images', 'type'])
+            ->where('is_active', true)
             ->latest()
             ->take(3)
             ->get();
