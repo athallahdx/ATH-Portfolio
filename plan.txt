@@ -1,0 +1,40 @@
+This is a personal portfolio website.
+My name is Athallah Tsany Satriyaji
+
+Techstack: Laravel + Filament + Inertiajs + Vue 3 + Tailwind CSS 
+
+Layout for every page:
+Header with logo on the left and navigation links on the right.
+
+Theme: Dark Blue-ish
+
+There will be 5 main page for this website:
+1. Filament Admin Panel -> Manage all content (admin only)
+2. Home Page -> Public access to view content
+3. Portfolio Page -> Public access to view portfolio
+4. Portfolio Detail Page -> Public access to view portfolio detail
+5. Contact Page -> Public access to contact
+
+Page 1 - Home
+Page 1 - Section 1: Hero Section: Will show picture of me and brief self-description with link to linkedin and to download my cv
+Page 1 - Section 2: About Me: More information about me using slider about my experience and my education
+Page 1 - Section 4: My Expertise: list of my expertise using card
+Page 1 - Section 5: Techstack: list of my techstack using flex layout
+Page 1 - Section 6: Portfolio Brief: Show my 3 most recent portfoio with card, and button to see more that will redirect to portfolio page
+Page 1 - Section 7: Contact: Quick contact form with name, email, whatsapp, message, button to send to email
+
+Page 2: Portfolio Page
+Page 2 - Section 1: List of portfolio types: List of portfolio items can be filtered by portfolio types
+Page 2 - Section 2: List of portfolio items: grid layout showing portfolio items with card and showing Techstack
+
+Page 3: Portfolio Detail Page
+Page 3 - Section 1: Portfolio Detail: Showing all information about the portfolio
+
+Page 4: Contact Page
+Page 4 - Section 1: Contact
+Page 4 - Section 2: Social Media:
+    - Email
+    - WhatsApp
+    - LinkedIn
+    - Github
+    - Instagram
