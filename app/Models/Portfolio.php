@@ -13,8 +13,9 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $title
+ * @property string|null $slug
  * @property string|null $description
- * @property Carbon|null $start_date
+ * @property Carbon|null $start_date    
  * @property Carbon|null $end_date
  * @property string|null $url
  * @property array|null $contributions
