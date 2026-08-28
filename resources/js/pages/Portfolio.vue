@@ -82,29 +82,25 @@ const formatDateRange = (start: string, end: string | null) => {
     <Head title="Portfolio | Athallah Tsany Satriyaji" />
 
     <PublicLayout>
-        <div class="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 bg-[#030712]">
+        <div class="relative min-h-screen bg-[#030712] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
             <!-- Grid decoration background -->
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.05),transparent_70%)] pointer-events-none z-0"></div>
 
-            <div class="max-w-7xl mx-auto relative z-10 space-y-12">
+            <div class="relative z-10 mx-auto w-full max-w-7xl space-y-14">
                 <!-- Header -->
-                <div class="text-center max-w-3xl mx-auto space-y-4">
-                    <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+                <div class="mx-auto max-w-3xl space-y-5 text-center">
+                    <h1 class="max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
                         My <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Project Directory</span>
                     </h1>
-                    <div class="h-1 w-20 bg-blue-500 mx-auto rounded-full"></div>
-                    <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
+                    <p class="mx-auto max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
                         Explore detailed case studies and technical architectures of platforms, API setups, and systems I have designed and deployed.
                     </p>
                 </div>
 
                 <!-- Filter Controls / Tags -->
-                <div class="space-y-4 max-w-5xl mx-auto bg-slate-900/30 border border-slate-850 p-6 rounded-2xl backdrop-blur-md">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div class="flex items-center gap-2 text-slate-350 text-sm font-semibold">
-                            <Layers class="w-4 h-4 text-blue-400" />
-                            Categories / Project Types:
-                        </div>
+                <div class="mx-auto max-w-5xl space-y-5 border-y border-slate-800/80 px-1 py-5 sm:px-2">
+                    <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                        <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Filter by type</h2>
                         <div v-if="filters.type || filters.tag || filters.techstack" class="flex">
                             <Link 
                                 href="/portfolio" 
@@ -156,11 +152,11 @@ const formatDateRange = (start: string, end: string | null) => {
                 </div>
 
                 <!-- Portfolios Grid -->
-                <div v-if="portfolios.data.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div v-if="portfolios.data.length > 0" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
                     <div 
                         v-for="proj in portfolios.data" 
                         :key="proj.id"
-                        class="flex flex-col bg-slate-900/25 border border-slate-850 rounded-2xl overflow-hidden hover:border-slate-700/60 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                        class="group flex flex-col overflow-hidden border border-slate-800/90 bg-slate-900/20 transition-colors duration-300 hover:border-slate-700"
                     >
                         <!-- Project Image / Icon -->
                         <div class="relative aspect-video w-full bg-slate-950 overflow-hidden border-b border-slate-900 flex items-center justify-center">
@@ -180,7 +176,7 @@ const formatDateRange = (start: string, end: string | null) => {
                         </div>
 
                         <!-- Project Information -->
-                        <div class="flex-grow p-6 flex flex-col justify-between space-y-6">
+                        <div class="flex flex-grow flex-col justify-between space-y-7 p-5 sm:p-6">
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between text-xs text-slate-500">
                                     <span class="flex items-center gap-1">
@@ -192,7 +188,7 @@ const formatDateRange = (start: string, end: string | null) => {
                                         {{ proj.type.name }}
                                     </span>
                                 </div>
-                                <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                                <h3 class="text-xl font-semibold leading-snug text-white transition-colors group-hover:text-blue-400">
                                     {{ proj.title }}
                                 </h3>
                                 <p class="text-sm text-slate-400 line-clamp-3 leading-relaxed">
@@ -200,9 +196,9 @@ const formatDateRange = (start: string, end: string | null) => {
                                 </p>
                             </div>
 
-                            <div class="space-y-4 pt-2">
+                            <div class="space-y-4">
                                 <!-- Tech tags -->
-                                <div v-if="proj.techstacks && proj.techstacks.length > 0" class="flex flex-wrap gap-1.5">
+                                <div v-if="proj.techstacks && proj.techstacks.length > 0" class="flex flex-wrap gap-1">
                                     <Link 
                                         v-for="ts in proj.techstacks.slice(0, 4)" 
                                         :key="ts.id"
