@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('techstacks', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
+            $table->string('slug')->unique();
             $table->string('icon', 255)->nullable();
             $table->integer('sort_order')->default(1);
             $table->boolean('is_active')->default(true);

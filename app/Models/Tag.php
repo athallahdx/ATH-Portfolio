@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $name
+ * @property string|null $slug
  * @property string|null $description
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -18,7 +19,7 @@ class Tag extends Model
 {
     protected $table = 'tags';
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'slugagg', 'description'];
 
     use HasFactory;
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
@@ -30,6 +31,7 @@ class Portfolio extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'description',
         'start_date',
         'end_date',
@@ -57,6 +59,12 @@ class Portfolio extends Model
     public function images(): HasMany
     {
         return $this->hasMany(PortfolioImage::class);
+    }
+
+    public function thumbnail(): HasOne
+    {
+        return $this->hasOne(PortfolioImage::class)
+            ->where('sort_order', 1);
     }
 
     public function techstacks(): BelongsToMany

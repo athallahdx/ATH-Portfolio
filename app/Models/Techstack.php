@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 /**
  * @property int $id
  * @property string $name
+ * @property string|null $slug
  * @property string|null $icon
  * @property int $sort_order
  * @property bool $is_active
@@ -21,7 +22,7 @@ class Techstack extends Model
 {
     protected $table = 'techstacks';
 
-    protected $fillable = ['name', 'icon', 'sort_order', 'is_active'];
+    protected $fillable = ['name', 'slug', 'icon', 'sort_order', 'is_active'];
 
     use HasFactory;
 

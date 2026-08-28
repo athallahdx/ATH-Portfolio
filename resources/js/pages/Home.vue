@@ -2,9 +2,9 @@
 import { ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import PublicLayout from '@/layouts/PublicLayout.vue';
-import { portfolio, contact } from '@/routes';
+import { portfolio, contact as contactRoute } from '@/routes';
 import { 
-    Linkedin, 
+    BriefcaseBusiness, 
     Download, 
     ArrowRight, 
     Mail, 
@@ -155,16 +155,16 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
     <PublicLayout>
         <!-- SECTION 1: HERO SECTION -->
-        <section class="relative min-h-[calc(100vh-4rem)] flex items-center py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        <section class="relative flex min-h-[calc(100vh-4.5rem)] items-center overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+            <div class="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
                 <!-- Text Intro -->
-                <div class="lg:col-span-7 space-y-6 text-left">
+                <div class="space-y-6 text-left lg:col-span-7">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-400 text-xs font-semibold uppercase tracking-wider animate-pulse">
                         <Sparkles class="w-3.5 h-3.5" />
                         Available for Opportunities
                     </div>
                     
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-none">
+                    <h1 class="max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl lg:text-7xl">
                         Hi, I'm <br class="sm:hidden" />
                         <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
                             Athallah Tsany
@@ -182,7 +182,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                     <!-- Call to Actions -->
                     <div class="flex flex-wrap gap-4 pt-2">
                         <Link 
-                            :href="contact().url" 
+                            :href="contactRoute().url" 
                             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
                         >
                             Let's Connect
@@ -205,7 +205,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                             target="_blank" 
                             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 font-semibold text-slate-300 border border-slate-800 hover:border-slate-700 transition-all duration-300"
                         >
-                            <Linkedin class="w-4 h-4 text-blue-400" />
+                            <BriefcaseBusiness class="w-4 h-4 text-blue-400" />
                             LinkedIn
                         </a>
                     </div>
@@ -348,7 +348,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
         </section>
 
         <!-- SECTION 4: MY EXPERTISE -->
-        <section class="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-900 bg-[#030712]">
+        <section class="border-t border-slate-900 bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -415,7 +415,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
         </section>
 
         <!-- SECTION 5: TECHSTACK -->
-        <section class="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-900 bg-[#02050e]/60">
+        <section class="border-t border-slate-900 bg-[#02050e]/60 px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -450,7 +450,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
         </section>
 
         <!-- SECTION 6: PORTFOLIO BRIEF -->
-        <section class="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-900 bg-[#030712]">
+        <section class="border-t border-slate-900 bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
                     <div class="space-y-4 max-w-2xl">
@@ -564,7 +564,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
         </section>
 
         <!-- SECTION 7: CONTACT -->
-        <section class="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-900 bg-[#02050e]/60">
+        <section class="border-t border-slate-900 bg-[#02050e]/60 px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">

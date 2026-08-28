@@ -9,9 +9,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('portfolio')->group(function () {
     Route::get('/', [PortfolioController::class, 'index'])->name('portfolio');
-    Route::get('{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
+    Route::get('/{portfolio}', [PortfolioController::class, 'show'])->name('portfolio.show');
 });
 
 Route::get('contact', [ContactController::class, 'index'])->name('contact');
 
-require __DIR__.'/settings.php';

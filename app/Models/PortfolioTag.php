@@ -4,7 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $portfolio_id
+ * @property int $tag_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class PortfolioTag extends Model
 {
     use HasFactory;
