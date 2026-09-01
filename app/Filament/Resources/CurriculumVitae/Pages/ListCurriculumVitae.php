@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\CurriculumVitaes\Pages;
+namespace App\Filament\Resources\CurriculumVitae\Pages;
 
-use App\Filament\Resources\CurriculumVitaes\CurriculumVitaeResource;
+use App\Filament\Resources\CurriculumVitae\CurriculumVitaeResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
-class ListCurriculumVitaes extends ListRecords
+class ListCurriculumVitae extends ListRecords
 {
     protected static string $resource = CurriculumVitaeResource::class;
 

@@ -18,7 +18,15 @@ class PortfolioResource extends Resource
 {
     protected static ?string $model = Portfolio::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;   
+
+    protected static ?string $pluralModelLabel = 'Portfolios';
+
+    protected static ?int $navigationSort = 8;
+
+    protected static ?string $modelLabel = 'Portfolio';
+
+    protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema
     {

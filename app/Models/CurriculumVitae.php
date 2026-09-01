@@ -11,24 +11,24 @@ use Illuminate\Support\Facades\Storage;
  * @property int $id
  * @property string $name
  * @property string|null $version
- * @property string $file
+ * @property string $cv
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
 class CurriculumVitae extends Model
 {
-    protected $table = 'curriculum_vitaes';
+    protected $table = 'curriculum_vitae';
 
-    protected $fillable = ['name', 'version', 'file', 'is_active'];
+    protected $fillable = ['name', 'cv', 'is_active'];
 
     use HasFactory;
 
     protected static function booted(): void
     {
         static::updating(function (CurriculumVitae $cv) {
-            if ($cv->isDirty('file')) {
-                $oldPath = $cv->getOriginal('file');
+            if ($cv->isDirty('cv')) {
+                $oldPath = $cv->getOriginal('cv');
 
                 if ($oldPath) {
                     Storage::disk('public')->delete($oldPath);
@@ -37,8 +37,8 @@ class CurriculumVitae extends Model
         });
 
         static::deleted(function (CurriculumVitae $cv) {
-            if ($cv->file) {
-                Storage::disk('public')->delete($cv->file);
+            if ($cv->cv) {
+                Storage::disk('public')->delete($cv->cv);
             }
         });
     }

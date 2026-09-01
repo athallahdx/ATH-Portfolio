@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Descriptions\Tables;
+namespace App\Filament\Resources\Contact\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -8,18 +8,27 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class DescriptionsTable
+class ContactTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('label')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('description')
+                TextColumn::make('email')
+                    ->searchable(),
+                TextColumn::make('whatsapp')
+                    ->searchable(),
+                TextColumn::make('linkedin')
                     ->searchable()
-                    ->limit(50)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('github')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('instagram')
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Contacts\Schemas;
+namespace App\Filament\Resources\Contact\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;

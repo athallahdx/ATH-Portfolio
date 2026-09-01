@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         /** User Admin Creation */
         User::factory()->create([
             'name' => 'Admin',
-            'email' => 'test@example.com',
+            'email' => 'admin@example.com',
         ]);
 
         /** Call other seeders */
@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             ExpertiseSeeder::class,
             ContactSeeder::class,
             CurriculumVitaeSeeder::class,
-            DescriptionSeeder::class,
             AboutMeSeeder::class,
         ]);
     }

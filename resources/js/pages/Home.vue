@@ -155,87 +155,86 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
     <PublicLayout>
         <!-- SECTION 1: HERO SECTION -->
-        <section class="relative flex min-h-[calc(100vh-4.5rem)] items-center overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-            <div class="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <section class="relative flex min-h-[calc(100vh-4.5rem)] items-center px-4 py-20 sm:px-6 lg:px-8">
+            <div class="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-16 lg:grid-cols-12 lg:gap-12">
                 <!-- Text Intro -->
-                <div class="space-y-6 text-left lg:col-span-7">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-400 text-xs font-semibold uppercase tracking-wider animate-pulse">
-                        <Sparkles class="w-3.5 h-3.5" />
-                        Available for Opportunities
-                    </div>
-                    
-                    <h1 class="max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl lg:text-7xl">
-                        Hi, I'm <br class="sm:hidden" />
-                        <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                            Athallah Tsany
+                <div class="lg:col-span-7">
+                    <div class="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/5 px-3 py-1 text-xs font-medium tracking-wide text-blue-300">
+                        <span class="relative flex h-1.5 w-1.5">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
+                            <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-blue-400"></span>
                         </span>
+                        Available for opportunities
+                    </div>
+
+                    <h1 class="mt-6 max-w-2xl text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
+                        Hi, I'm
+                        <span class="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Athallah Tsany</span>
                     </h1>
-                    
-                    <h2 class="text-xl sm:text-2xl font-semibold text-slate-300">
+
+                    <h2 class="mt-3 text-lg font-medium text-slate-400 sm:text-xl">
                         Full Stack Web Developer
                     </h2>
-                    
-                    <p class="text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
+
+                    <p class="mt-6 max-w-xl text-base leading-relaxed text-slate-400">
                         {{ aboutme[0]?.description ?? defaultHeroDescription }}
                     </p>
-                    
+
                     <!-- Call to Actions -->
-                    <div class="flex flex-wrap gap-4 pt-2">
+                    <div class="mt-8 flex flex-wrap items-center gap-3">
                         <Link 
                             :href="contactRoute().url" 
-                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
+                            class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-500"
                         >
                             Let's Connect
-                            <ArrowRight class="w-4 h-4" />
+                            <ArrowRight class="h-4 w-4" />
                         </Link>
-                        
+
                         <a 
                             v-if="curriculumvitae" 
                             :href="'/storage/' + curriculumvitae.file" 
                             download 
-                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-slate-200 border border-slate-700 hover:border-slate-600 transition-all duration-300 hover:-translate-y-0.5"
+                            class="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-5 py-2.5 text-sm font-semibold text-slate-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
                         >
                             Download CV
-                            <Download class="w-4 h-4" />
+                            <Download class="h-4 w-4" />
                         </a>
-                        
+
                         <a 
                             v-if="contact?.linkedin" 
                             :href="contact.linkedin" 
                             target="_blank" 
-                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 font-semibold text-slate-300 border border-slate-800 hover:border-slate-700 transition-all duration-300"
+                            class="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-400 transition-colors duration-300 hover:text-white"
                         >
-                            <BriefcaseBusiness class="w-4 h-4 text-blue-400" />
+                            <BriefcaseBusiness class="h-4 w-4 text-blue-400" />
                             LinkedIn
                         </a>
                     </div>
                 </div>
 
                 <!-- Avatar / Visual Element -->
-                <div class="lg:col-span-5 flex justify-center lg:justify-end relative">
-                    <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
-                        <!-- Glowing background behind image -->
-                        <div class="absolute inset-0 bg-gradient-to-tr from-blue-600/30 to-indigo-500/30 rounded-3xl blur-2xl transform rotate-6 scale-95 animate-pulse"></div>
-                        
-                        <!-- Image Container with glassmorphism border -->
-                        <div class="absolute inset-0 rounded-3xl border border-slate-700/50 overflow-hidden bg-slate-900/60 backdrop-blur-xl p-3 shadow-2xl">
+                <div class="flex justify-center lg:col-span-5 lg:justify-end">
+                    <div class="relative h-64 w-64 sm:h-80 sm:w-80 lg:h-[22rem] lg:w-[22rem]">
+                        <div class="absolute -inset-px rounded-2xl bg-gradient-to-br from-blue-500/50 via-indigo-500/20 to-transparent"></div>
+
+                        <div class="absolute inset-[1px] overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950 p-2">
                             <img 
                                 v-if="aboutme[0]?.image" 
                                 :src="'/storage/' + aboutme[0].image" 
                                 alt="Athallah Tsany Satriyaji" 
-                                class="w-full h-full object-cover rounded-2xl grayscale hover:grayscale-0 transition-all duration-500"
+                                class="h-full w-full rounded-xl object-cover grayscale transition-all duration-500 hover:grayscale-0"
                             />
                             <!-- Fallback profile illustration / abstract styling -->
-                            <div v-else class="w-full h-full rounded-2xl bg-gradient-to-br from-slate-850 to-slate-950 flex flex-col items-center justify-center border border-slate-800/50 p-6 text-center space-y-4">
-                                <div class="w-20 h-20 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20 shadow-inner">
-                                    <Code class="w-10 h-10" />
+                            <div v-else class="flex h-full w-full flex-col items-center justify-center space-y-4 rounded-xl border border-slate-800/50 bg-slate-900/60 p-6 text-center">
+                                <div class="flex h-16 w-16 items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-400">
+                                    <Code class="h-8 w-8" />
                                 </div>
                                 <div class="space-y-1">
-                                    <h3 class="text-white font-bold text-lg">Athallah Tsany Satriyaji</h3>
-                                    <p class="text-xs text-blue-400 font-mono">&lt;FullStackDeveloper /&gt;</p>
+                                    <h3 class="text-base font-bold text-white">Athallah Tsany Satriyaji</h3>
+                                    <p class="font-mono text-xs text-blue-400">&lt;FullStackDeveloper /&gt;</p>
                                 </div>
-                                <p class="text-xs text-slate-400 max-w-[200px]">
-                                    Specializing in Laravel, Vue 3, & Tailwind CSS
+                                <p class="max-w-[200px] text-xs text-slate-400">
+                                    Specializing in Laravel, Vue 3, &amp; Tailwind CSS
                                 </p>
                             </div>
                         </div>
@@ -245,58 +244,56 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
         </section>
 
         <!-- SECTION 2: ABOUT ME -->
-        <section class="py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-900 bg-[#02050e]/60 relative">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                        About Me
-                    </h2>
-                    <div class="h-1 w-20 bg-blue-500 mx-auto rounded-full"></div>
-                    <p class="text-slate-400 text-md leading-relaxed">
+        <section class="border-t border-slate-900 bg-[#02050e]/60 px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+            <div class="mx-auto max-w-6xl">
+                <div class="mx-auto mb-14 max-w-2xl text-center sm:mb-16">
+                    <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// about-me</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">About Me</h2>
+                    <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
                         {{ aboutme[1]?.description ?? defaultAboutMe }}
                     </p>
                 </div>
 
                 <!-- Experience & Education Slider/Tabs -->
-                <div class="max-w-4xl mx-auto bg-slate-900/40 border border-slate-800/60 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-xl">
-                    <div class="flex justify-center border-b border-slate-800 pb-4 mb-8">
-                        <div class="inline-flex bg-slate-950 p-1.5 rounded-xl border border-slate-800/80">
+                <div class="mx-auto max-w-3xl rounded-xl border border-slate-800/60 bg-slate-900/40 p-6 sm:p-8">
+                    <div class="mb-8 flex justify-center border-b border-slate-800 pb-6">
+                        <div class="inline-flex rounded-lg border border-slate-800/80 bg-slate-950 p-1">
                             <button 
                                 @click="activeAboutTab = 'experience'" 
-                                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300"
-                                :class="activeAboutTab === 'experience' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white'"
+                                class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-300"
+                                :class="activeAboutTab === 'experience' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'"
                             >
-                                <Briefcase class="w-4 h-4" />
+                                <Briefcase class="h-4 w-4" />
                                 Experience
                             </button>
                             <button 
                                 @click="activeAboutTab = 'education'" 
-                                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300"
-                                :class="activeAboutTab === 'education' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white'"
+                                class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-300"
+                                :class="activeAboutTab === 'education' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'"
                             >
-                                <BookOpen class="w-4 h-4" />
+                                <BookOpen class="h-4 w-4" />
                                 Education
                             </button>
                         </div>
                     </div>
 
                     <!-- Slide Contents -->
-                    <div class="space-y-8 relative min-h-[250px]">
+                    <div class="relative min-h-[220px]">
                         <!-- Tab 1: Experience -->
-                        <div v-if="activeAboutTab === 'experience'" class="space-y-8 animate-fade-in">
-                            <div class="relative border-l border-blue-500/20 ml-3 pl-6 sm:pl-8 space-y-8">
+                        <div v-if="activeAboutTab === 'experience'" class="animate-fade-in space-y-8">
+                            <div class="relative ml-3 space-y-8 border-l border-blue-500/20 pl-6 sm:pl-8">
                                 <!-- Experience Item 1 -->
                                 <div class="relative">
-                                    <span class="absolute -left-[35px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-950 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
+                                    <span class="absolute -left-[35px] top-1.5 h-3.5 w-3.5 rounded-full border-4 border-slate-950 bg-blue-500"></span>
                                     <div class="space-y-2">
-                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                                            <h4 class="text-lg font-bold text-white">Lead Full-Stack Developer</h4>
-                                            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/25 text-blue-400 sm:self-start">
+                                        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                                            <h4 class="text-base font-bold text-white">Lead Full-Stack Developer</h4>
+                                            <span class="inline-flex w-fit items-center rounded-md border border-blue-500/25 bg-blue-500/10 px-2.5 py-1 text-xs font-semibold text-blue-400">
                                                 2024 - Present
                                             </span>
                                         </div>
-                                        <p class="text-sm text-slate-300 font-medium">Independent Software Engineer & Tech Lead</p>
-                                        <p class="text-sm text-slate-400 leading-relaxed">
+                                        <p class="text-sm font-medium text-slate-300">Independent Software Engineer &amp; Tech Lead</p>
+                                        <p class="text-sm leading-relaxed text-slate-400">
                                             Designing and shipping scalable products for various startups. Built custom e-commerce engines, real-time messaging platforms, and structured management platforms using Laravel, Inertia, Vue, and Tailind CSS.
                                         </p>
                                     </div>
@@ -304,16 +301,16 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
                                 <!-- Experience Item 2 -->
                                 <div class="relative">
-                                    <span class="absolute -left-[35px] top-1.5 w-4 h-4 rounded-full bg-blue-500/60 border-4 border-slate-950"></span>
+                                    <span class="absolute -left-[35px] top-1.5 h-3.5 w-3.5 rounded-full border-4 border-slate-950 bg-blue-500/50"></span>
                                     <div class="space-y-2">
-                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                                            <h4 class="text-lg font-bold text-white">Full Stack Web Developer</h4>
-                                            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-400 sm:self-start">
+                                        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                                            <h4 class="text-base font-bold text-white">Full Stack Web Developer</h4>
+                                            <span class="inline-flex w-fit items-center rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-400">
                                                 2022 - 2024
                                             </span>
                                         </div>
-                                        <p class="text-sm text-slate-300 font-medium">Software Development Firm</p>
-                                        <p class="text-sm text-slate-400 leading-relaxed">
+                                        <p class="text-sm font-medium text-slate-300">Software Development Firm</p>
+                                        <p class="text-sm leading-relaxed text-slate-400">
                                             Designed RESTful APIs, optimized databases, and engineered reactive user interfaces. Implemented robust authorization systems, automated tests, and streamlined deployment pipelines.
                                         </p>
                                     </div>
@@ -322,20 +319,20 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                         </div>
 
                         <!-- Tab 2: Education -->
-                        <div v-if="activeAboutTab === 'education'" class="space-y-8 animate-fade-in">
-                            <div class="relative border-l border-indigo-500/20 ml-3 pl-6 sm:pl-8 space-y-8">
+                        <div v-if="activeAboutTab === 'education'" class="animate-fade-in space-y-8">
+                            <div class="relative ml-3 space-y-8 border-l border-indigo-500/20 pl-6 sm:pl-8">
                                 <!-- Education Item 1 -->
                                 <div class="relative">
-                                    <span class="absolute -left-[35px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-4 border-slate-950 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
+                                    <span class="absolute -left-[35px] top-1.5 h-3.5 w-3.5 rounded-full border-4 border-slate-950 bg-indigo-500"></span>
                                     <div class="space-y-2">
-                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                                            <h4 class="text-lg font-bold text-white">Bachelor of Computer Science</h4>
-                                            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 sm:self-start">
+                                        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                                            <h4 class="text-base font-bold text-white">Bachelor of Computer Science</h4>
+                                            <span class="inline-flex w-fit items-center rounded-md border border-indigo-500/25 bg-indigo-500/10 px-2.5 py-1 text-xs font-semibold text-indigo-400">
                                                 Graduated
                                             </span>
                                         </div>
-                                        <p class="text-sm text-slate-300 font-medium">Major in Software Engineering</p>
-                                        <p class="text-sm text-slate-400 leading-relaxed">
+                                        <p class="text-sm font-medium text-slate-300">Major in Software Engineering</p>
+                                        <p class="text-sm leading-relaxed text-slate-400">
                                             Acquired foundational and advanced knowledge of algorithms, database architectures, network communication, object-oriented design patterns, and human-computer interaction.
                                         </p>
                                     </div>
@@ -349,63 +346,61 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
         <!-- SECTION 4: MY EXPERTISE -->
         <section class="border-t border-slate-900 bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                        My Expertise
-                    </h2>
-                    <div class="h-1 w-20 bg-blue-500 mx-auto rounded-full"></div>
-                    <p class="text-slate-400 text-md leading-relaxed">
+            <div class="mx-auto max-w-6xl">
+                <div class="mx-auto mb-14 max-w-2xl text-center sm:mb-16">
+                    <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// expertise</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">My Expertise</h2>
+                    <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
                         What I excel at. I deliver premium code and systems that scale.
                     </p>
                 </div>
 
                 <!-- Expertise Cards Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                     <div 
                         v-for="exp in expertises" 
                         :key="exp.id"
-                        class="group relative bg-slate-900/30 border border-slate-800/60 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/5 hover:-translate-y-1"
+                        class="group rounded-xl border border-slate-800/60 bg-slate-900/30 p-6 transition-colors duration-300 hover:border-blue-500/30"
                     >
-                        <div class="h-12 w-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 mb-6">
-                            <Code class="w-6 h-6" />
+                        <div class="mb-6 flex h-11 w-11 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-600/10 text-blue-400 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
+                            <Code class="h-5 w-5" />
                         </div>
                         
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">
+                        <h3 class="mb-2 text-lg font-bold text-white transition-colors duration-300 group-hover:text-blue-400">
                             {{ exp.name }}
                         </h3>
                         
-                        <p class="text-slate-400 text-sm leading-relaxed">
+                        <p class="text-sm leading-relaxed text-slate-400">
                             {{ exp.description }}
                         </p>
                     </div>
                     
                     <!-- Fallback items if database is empty -->
                     <template v-if="expertises.length === 0">
-                        <div class="group relative bg-slate-900/30 border border-slate-800/60 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300">
-                            <div class="h-12 w-12 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-400 mb-6">
-                                <Code class="w-6 h-6" />
+                        <div class="rounded-xl border border-slate-800/60 bg-slate-900/30 p-6">
+                            <div class="mb-6 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-600/10 text-blue-400">
+                                <Code class="h-5 w-5" />
                             </div>
-                            <h3 class="text-xl font-bold text-white mb-3">Full Stack Development</h3>
-                            <p class="text-slate-400 text-sm leading-relaxed">
+                            <h3 class="mb-2 text-lg font-bold text-white">Full Stack Development</h3>
+                            <p class="text-sm leading-relaxed text-slate-400">
                                 End-to-end web application development from database schemas to reactive modern interfaces using Laravel, Vue 3, and Inertia.js.
                             </p>
                         </div>
-                        <div class="group relative bg-slate-900/30 border border-slate-800/60 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300">
-                            <div class="h-12 w-12 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-400 mb-6">
-                                <Code class="w-6 h-6" />
+                        <div class="rounded-xl border border-slate-800/60 bg-slate-900/30 p-6">
+                            <div class="mb-6 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-600/10 text-blue-400">
+                                <Code class="h-5 w-5" />
                             </div>
-                            <h3 class="text-xl font-bold text-white mb-3">Backend Architecture</h3>
-                            <p class="text-slate-400 text-sm leading-relaxed">
+                            <h3 class="mb-2 text-lg font-bold text-white">Backend Architecture</h3>
+                            <p class="text-sm leading-relaxed text-slate-400">
                                 Creating secure RESTful APIs, optimizing queries, caching strategies, queue jobs, and authorization policies.
                             </p>
                         </div>
-                        <div class="group relative bg-slate-900/30 border border-slate-800/60 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300">
-                            <div class="h-12 w-12 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-400 mb-6">
-                                <Code class="w-6 h-6" />
+                        <div class="rounded-xl border border-slate-800/60 bg-slate-900/30 p-6">
+                            <div class="mb-6 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-600/10 text-blue-400">
+                                <Code class="h-5 w-5" />
                             </div>
-                            <h3 class="text-xl font-bold text-white mb-3">DevOps & Deployment</h3>
-                            <p class="text-slate-400 text-sm leading-relaxed">
+                            <h3 class="mb-2 text-lg font-bold text-white">DevOps &amp; Deployment</h3>
+                            <p class="text-sm leading-relaxed text-slate-400">
                                 Containerizing applications with Docker, managing deployment pipelines, and hosting applications on secure cloud systems.
                             </p>
                         </div>
@@ -416,32 +411,30 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
         <!-- SECTION 5: TECHSTACK -->
         <section class="border-t border-slate-900 bg-[#02050e]/60 px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                        My Techstack
-                    </h2>
-                    <div class="h-1 w-20 bg-blue-500 mx-auto rounded-full"></div>
-                    <p class="text-slate-400 text-md leading-relaxed">
+            <div class="mx-auto max-w-6xl">
+                <div class="mx-auto mb-14 max-w-2xl text-center sm:mb-16">
+                    <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// techstack</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">My Techstack</h2>
+                    <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
                         The core languages, frameworks, and technologies I build with.
                     </p>
                 </div>
 
                 <!-- Flex / Grid wrap layout -->
-                <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+                <div class="mx-auto flex max-w-3xl flex-wrap justify-center gap-3">
                     <div 
                         v-for="tech in techstacks" 
                         :key="tech.id"
-                        class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-slate-900/40 border border-slate-800/60 hover:border-blue-500/20 hover:bg-slate-900/80 transition-all duration-300 hover:scale-105"
+                        class="flex items-center gap-2.5 rounded-lg border border-slate-800/60 bg-slate-900/40 px-4 py-2.5 transition-colors duration-300 hover:border-blue-500/25 hover:bg-slate-900/80"
                     >
-                        <span class="text-blue-400 font-mono text-sm">&lt;/&gt;</span>
+                        <span class="font-mono text-sm text-blue-400">&lt;/&gt;</span>
                         <span class="text-sm font-semibold text-slate-200">{{ tech.name }}</span>
                     </div>
                     
                     <!-- Fallback techstacks -->
                     <template v-if="techstacks.length === 0">
-                        <div v-for="techName in ['TypeScript', 'JavaScript', 'PHP', 'Laravel', 'Vue.js', 'React', 'Tailwind CSS', 'MySQL', 'PostgreSQL', 'Docker', 'Redis', 'Inertia.js']" :key="techName" class="flex items-center gap-3 px-5 py-3 rounded-2xl bg-slate-900/40 border border-slate-800/60 hover:border-blue-500/25 transition-all">
-                            <span class="text-blue-400 font-mono text-sm">&lt;/&gt;</span>
+                        <div v-for="techName in ['TypeScript', 'JavaScript', 'PHP', 'Laravel', 'Vue.js', 'React', 'Tailwind CSS', 'MySQL', 'PostgreSQL', 'Docker', 'Redis', 'Inertia.js']" :key="techName" class="flex items-center gap-2.5 rounded-lg border border-slate-800/60 bg-slate-900/40 px-4 py-2.5 transition-colors duration-300 hover:border-blue-500/25">
+                            <span class="font-mono text-sm text-blue-400">&lt;/&gt;</span>
                             <span class="text-sm font-semibold text-slate-200">{{ techName }}</span>
                         </div>
                     </template>
@@ -451,99 +444,95 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
         <!-- SECTION 6: PORTFOLIO BRIEF -->
         <section class="border-t border-slate-900 bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-                    <div class="space-y-4 max-w-2xl">
-                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                            Recent Work
-                        </h2>
-                        <div class="h-1 w-20 bg-blue-500 rounded-full"></div>
-                        <p class="text-slate-400 text-md leading-relaxed">
+            <div class="mx-auto max-w-6xl">
+                <div class="mb-14 flex flex-col gap-6 sm:mb-16 md:flex-row md:items-end md:justify-between">
+                    <div class="max-w-2xl">
+                        <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// recent-work</p>
+                        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Recent Work</h2>
+                        <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
                             A curated showcase of web apps, tools, and platforms I've recently built.
                         </p>
                     </div>
                     <div>
                         <Link 
                             :href="portfolio().url" 
-                            class="inline-flex items-center gap-2 text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors"
+                            class="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition-colors hover:text-blue-300"
                         >
                             View All Projects
-                            <ArrowRight class="w-4 h-4" />
+                            <ArrowRight class="h-4 w-4" />
                         </Link>
                     </div>
                 </div>
 
                 <!-- Portfolios Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <div 
                         v-for="proj in portfolios" 
                         :key="proj.id"
-                        class="flex flex-col bg-slate-900/25 border border-slate-850 rounded-2xl overflow-hidden hover:border-slate-700/60 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                        class="flex flex-col overflow-hidden rounded-xl border border-slate-850 bg-slate-900/25 transition-colors duration-300 hover:border-slate-700/60"
                     >
                         <!-- Image representation -->
-                        <div class="relative aspect-video w-full bg-slate-950 overflow-hidden border-b border-slate-900 flex items-center justify-center">
+                        <div class="relative flex aspect-video w-full items-center justify-center overflow-hidden border-b border-slate-900 bg-slate-950">
                             <img 
                                 v-if="proj.images && proj.images.length > 0"
                                 :src="'/storage/' + proj.images[0].image"
                                 :alt="proj.title"
-                                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                                class="h-full w-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
                             />
                             <!-- Placeholder gradient visual -->
-                            <div v-else class="w-full h-full bg-gradient-to-tr from-slate-900 via-blue-950/20 to-slate-900 flex flex-col items-center justify-center p-6 text-center space-y-2">
-                                <span class="h-10 w-10 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                                    <Code class="w-5 h-5" />
+                            <div v-else class="flex h-full w-full flex-col items-center justify-center space-y-2 bg-gradient-to-tr from-slate-900 via-blue-950/20 to-slate-900 p-6 text-center">
+                                <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-600/10 text-blue-400">
+                                    <Code class="h-5 w-5" />
                                 </span>
-                                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">{{ proj.type?.name ?? 'Application' }}</span>
+                                <span class="text-xs font-bold uppercase tracking-widest text-blue-400">{{ proj.type?.name ?? 'Application' }}</span>
                             </div>
                         </div>
 
                         <!-- Info -->
-                        <div class="flex-grow p-6 flex flex-col justify-between space-y-6">
+                        <div class="flex flex-grow flex-col justify-between space-y-6 p-6">
                             <div class="space-y-3">
-                                <div class="flex items-center justify-between text-xs text-slate-500">
-                                    <span>{{ formatDateRange(proj.start_date, proj.end_date) }}</span>
-                                </div>
-                                <h3 class="text-xl font-bold text-white">
+                                <span class="text-xs text-slate-500">{{ formatDateRange(proj.start_date, proj.end_date) }}</span>
+                                <h3 class="text-lg font-bold text-white">
                                     {{ proj.title }}
                                 </h3>
-                                <p class="text-sm text-slate-400 line-clamp-3 leading-relaxed">
+                                <p class="line-clamp-3 text-sm leading-relaxed text-slate-400">
                                     {{ proj.description }}
                                 </p>
                             </div>
 
-                            <div class="space-y-4 pt-2">
+                            <div class="space-y-4">
                                 <!-- Tech tags -->
                                 <div v-if="proj.techstacks && proj.techstacks.length > 0" class="flex flex-wrap gap-1.5">
                                     <span 
                                         v-for="ts in proj.techstacks.slice(0, 4)" 
                                         :key="ts.id"
-                                        class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-300"
+                                        class="rounded border border-slate-800 bg-slate-950 px-2 py-0.5 text-[10px] font-semibold text-slate-300"
                                     >
                                         {{ ts.name }}
                                     </span>
-                                    <span v-if="proj.techstacks.length > 4" class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400">
+                                    <span v-if="proj.techstacks.length > 4" class="rounded border border-slate-800 bg-slate-950 px-2 py-0.5 text-[10px] font-semibold text-slate-400">
                                         +{{ proj.techstacks.length - 4 }} more
                                     </span>
                                 </div>
 
                                 <!-- Link button -->
-                                <div class="border-t border-slate-800/80 pt-4 flex items-center justify-between">
+                                <div class="flex items-center justify-between border-t border-slate-800/80 pt-4">
                                     <Link 
                                         :href="`/portfolio/${proj.id}`" 
-                                        class="text-xs font-bold text-blue-400 hover:text-blue-300 inline-flex items-center gap-1 transition-colors"
+                                        class="inline-flex items-center gap-1 text-xs font-bold text-blue-400 transition-colors hover:text-blue-300"
                                     >
                                         Read Details
-                                        <ArrowRight class="w-3.5 h-3.5" />
+                                        <ArrowRight class="h-3.5 w-3.5" />
                                     </Link>
                                     
                                     <a 
                                         v-if="proj.url" 
                                         :href="proj.url" 
                                         target="_blank" 
-                                        class="text-slate-400 hover:text-white transition-colors"
+                                        class="text-slate-400 transition-colors hover:text-white"
                                         aria-label="View site"
                                     >
-                                        <ExternalLink class="w-4 h-4" />
+                                        <ExternalLink class="h-4 w-4" />
                                     </a>
                                 </div>
                             </div>
@@ -551,13 +540,13 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                     </div>
                 </div>
 
-                <div class="flex justify-center mt-12">
+                <div class="flex justify-center">
                     <Link 
                         :href="portfolio().url" 
-                        class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-slate-850 hover:bg-slate-800 font-semibold text-slate-200 border border-slate-800 hover:border-slate-700 transition-all duration-300 hover:-translate-y-0.5"
+                        class="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-6 py-3 text-sm font-semibold text-slate-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
                     >
                         Browse All Projects
-                        <ArrowRight class="w-4 h-4" />
+                        <ArrowRight class="h-4 w-4" />
                     </Link>
                 </div>
             </div>
@@ -565,45 +554,43 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
         <!-- SECTION 7: CONTACT -->
         <section class="border-t border-slate-900 bg-[#02050e]/60 px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                        Get In Touch
-                    </h2>
-                    <div class="h-1 w-20 bg-blue-500 mx-auto rounded-full"></div>
-                    <p class="text-slate-400 text-md leading-relaxed">
+            <div class="mx-auto max-w-6xl">
+                <div class="mx-auto mb-14 max-w-2xl text-center sm:mb-16">
+                    <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// get-in-touch</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Get In Touch</h2>
+                    <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
                         Let's work together! Fill out the form or reach out directly.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-5xl mx-auto">
+                <div class="mx-auto grid max-w-4xl grid-cols-1 items-start gap-12 lg:grid-cols-12">
                     <!-- Column 1: Info -->
-                    <div class="lg:col-span-5 space-y-6">
-                        <h3 class="text-2xl font-bold text-white">Contact Info</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed max-w-sm">
+                    <div class="lg:col-span-5">
+                        <h3 class="text-xl font-bold text-white">Contact Info</h3>
+                        <p class="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
                             Have an exciting project you want to build or just want to chat? Send a message and let's explore opportunities.
                         </p>
 
-                        <div class="space-y-4 pt-4">
+                        <div class="mt-6 space-y-4">
                             <div v-if="contact?.email" class="flex items-center gap-4">
-                                <div class="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20">
-                                    <Mail class="w-5 h-5" />
+                                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 text-blue-400">
+                                    <Mail class="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Email</p>
-                                    <a :href="'mailto:' + contact.email" class="text-sm font-medium text-slate-200 hover:text-blue-400 transition-colors">
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Email</p>
+                                    <a :href="'mailto:' + contact.email" class="text-sm font-medium text-slate-200 transition-colors hover:text-blue-400">
                                         {{ contact.email }}
                                     </a>
                                 </div>
                             </div>
 
                             <div v-if="contact?.whatsapp" class="flex items-center gap-4">
-                                <div class="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20">
-                                    <Phone class="w-5 h-5" />
+                                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 text-blue-400">
+                                    <Phone class="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">WhatsApp</p>
-                                    <a :href="'https://wa.me/' + contact.whatsapp.replace(/\D/g, '')" target="_blank" class="text-sm font-medium text-slate-200 hover:text-blue-400 transition-colors">
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">WhatsApp</p>
+                                    <a :href="'https://wa.me/' + contact.whatsapp.replace(/\D/g, '')" target="_blank" class="text-sm font-medium text-slate-200 transition-colors hover:text-blue-400">
                                         {{ contact.whatsapp }}
                                     </a>
                                 </div>
@@ -612,67 +599,67 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                     </div>
 
                     <!-- Column 2: Form -->
-                    <div class="lg:col-span-7 bg-slate-900/40 border border-slate-800/60 rounded-2xl p-6 sm:p-8 backdrop-blur-md">
+                    <div class="rounded-xl border border-slate-800/60 bg-slate-900/40 p-6 sm:p-8 lg:col-span-7">
                         <form @submit.prevent="handleContactSubmit" class="space-y-5">
                             <div>
-                                <label for="name" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Name</label>
+                                <label for="name" class="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">Name</label>
                                 <input 
                                     type="text" 
                                     id="name" 
                                     v-model="contactForm.name"
                                     required 
                                     placeholder="Your Name"
-                                    class="w-full bg-slate-950 border border-slate-850 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-500/80 transition-all text-sm"
+                                    class="w-full rounded-lg border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 transition-colors focus:border-blue-500/80 focus:outline-none"
                                 />
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div>
-                                    <label for="email" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email</label>
+                                    <label for="email" class="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">Email</label>
                                     <input 
                                         type="email" 
                                         id="email" 
                                         v-model="contactForm.email"
                                         required 
                                         placeholder="your@email.com"
-                                        class="w-full bg-slate-950 border border-slate-850 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-500/80 transition-all text-sm"
+                                        class="w-full rounded-lg border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 transition-colors focus:border-blue-500/80 focus:outline-none"
                                     />
                                 </div>
                                 <div>
-                                    <label for="whatsapp" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">WhatsApp / Phone</label>
+                                    <label for="whatsapp" class="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">WhatsApp / Phone</label>
                                     <input 
                                         type="text" 
                                         id="whatsapp" 
                                         v-model="contactForm.whatsapp"
                                         placeholder="+1 234 567"
-                                        class="w-full bg-slate-950 border border-slate-850 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-500/80 transition-all text-sm"
+                                        class="w-full rounded-lg border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 transition-colors focus:border-blue-500/80 focus:outline-none"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label for="message" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Message</label>
+                                <label for="message" class="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">Message</label>
                                 <textarea 
                                     id="message" 
                                     v-model="contactForm.message"
                                     required 
                                     rows="5"
                                     placeholder="Brief project details..."
-                                    class="w-full bg-slate-950 border border-slate-850 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-500/80 transition-all text-sm resize-none"
+                                    class="w-full resize-none rounded-lg border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 transition-colors focus:border-blue-500/80 focus:outline-none"
                                 ></textarea>
                             </div>
 
                             <button 
                                 type="submit" 
                                 :disabled="isSubmitting"
-                                class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-blue-600/50 font-semibold text-white transition-all duration-300 shadow-lg shadow-blue-500/10 cursor-pointer"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/10 transition-all duration-300 hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-blue-600/50"
                             >
-                                <Send v-if="!isSubmitting" class="w-4 h-4" />
-                                <span v-else class="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                <Send v-if="!isSubmitting" class="h-4 w-4" />
+                                <span v-else class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
                                 {{ isSubmitting ? 'Preparing Mail...' : 'Send Message' }}
                             </button>
 
-                            <p v-if="showSuccessMessage" class="text-xs text-emerald-400 font-semibold mt-2 text-center animate-pulse">
+                            <p v-if="showSuccessMessage" class="text-center text-xs font-semibold text-emerald-400">
                                 Opening your email client to send the message...
                             </p>
                         </form>
@@ -690,5 +677,11 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 }
 .animate-fade-in {
     animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-in {
+        animation: none;
+    }
 }
 </style>

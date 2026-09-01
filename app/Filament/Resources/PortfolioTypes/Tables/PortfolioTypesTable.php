@@ -19,10 +19,11 @@ class PortfolioTypesTable
                     ->sortable(),
                 TextColumn::make('description')
                     ->searchable()
-                    ->limit(50)
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->limit(50),
                 TextColumn::make('is_active')
                     ->badge()
+                    ->color(fn(string $state): string => $state ? 'success' : 'danger')
+                    ->formatStateUsing(fn(string $state): string => $state ? 'Active' : 'Inactive')
                     ->sortable(),
             ])
             ->filters([

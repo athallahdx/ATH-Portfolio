@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 
 /**
@@ -35,5 +36,20 @@ class Expertise extends Model
             'sort_order' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::updating(function (Expertise $expertise) {
+            if ($expertise->isDirty('icon') && $expertise->getOriginal('icon')) {
+                Storage::disk('public')->delete($expertise->getOriginal('icon'));
+            }
+        });
+
+        static::deleted(function (Expertise $expertise) {
+            if ($expertise->icon) {
+                Storage::disk('public')->delete($expertise->icon);
+            }
+        });
     }
 }

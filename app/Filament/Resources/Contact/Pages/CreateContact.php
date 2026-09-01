@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Contacts\Pages;
+namespace App\Filament\Resources\Contact\Pages;
 
-use App\Filament\Resources\Contacts\ContactResource;
+use App\Filament\Resources\Contact\ContactResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateContact extends CreateRecord

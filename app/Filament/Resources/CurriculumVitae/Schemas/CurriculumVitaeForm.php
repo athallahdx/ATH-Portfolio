@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CurriculumVitaes\Schemas;
+namespace App\Filament\Resources\CurriculumVitae\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
@@ -16,12 +16,11 @@ class CurriculumVitaeForm
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('version')
-                    ->maxLength(255),
-                FileUpload::make('file')
+                FileUpload::make('cv')
                     ->required()
-                    ->directory('cvs')
+                    ->directory('cv')
                     ->disk('public')
+                    ->acceptedFileTypes(['application/pdf'])
                     ->visibility('public')
                     ->downloadable(),
                 Toggle::make('is_active')

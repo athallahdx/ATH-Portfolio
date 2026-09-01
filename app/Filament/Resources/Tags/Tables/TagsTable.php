@@ -19,8 +19,7 @@ class TagsTable
                     ->sortable(),
                 TextColumn::make('description')
                     ->searchable()
-                    ->limit(50)
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->limit(50),
             ])
             ->filters([
                 //

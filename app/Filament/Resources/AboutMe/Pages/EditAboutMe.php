@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Contacts\Pages;
+namespace App\Filament\Resources\AboutMe\Pages;
 
-use App\Filament\Resources\Contacts\ContactResource;
+use App\Filament\Resources\AboutMe\AboutMeResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditContact extends EditRecord
+class EditAboutMe extends EditRecord
 {
-    protected static string $resource = ContactResource::class;
+    protected static string $resource = AboutMeResource::class;
 
     protected function getHeaderActions(): array
     {

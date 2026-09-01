@@ -18,7 +18,15 @@ class TechstackResource extends Resource
 {
     protected static ?string $model = Techstack::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedServerStack;
+
+    protected static ?string $navigationLabel = 'Techstack';
+
+    protected static ?string $pluralModelLabel = 'Techstacks';
+
+    protected static ?int $navigationSort = 7;
+
+    protected static ?string $modelLabel = 'Techstack';
 
     public static function form(Schema $schema): Schema
     {
