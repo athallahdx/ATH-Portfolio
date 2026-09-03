@@ -12,6 +12,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PortfolioForm
 {
@@ -99,6 +102,18 @@ class PortfolioForm
                                     ->disk('public')
                                     ->visibility('public')
                                     ->image()
+                                    ->imageEditor()
+                                    ->imageEditorAspectRatioOptions([
+                                        null,
+                                        '16:9',
+                                        '9:16',
+                                        '4:3',
+                                        '3:4',
+                                    ])
+                                    ->getUploadedFileNameForStorageUsing(
+                                        fn (TemporaryUploadedFile $file, Get $get): string => Str::slug((string) $get('label') ?: 'portfolio-image') . '-' . uniqid()
+                                            . '.' . $file->guessExtension(),
+                                    )
                                     ->downloadable()
                                     ->columnSpanFull(),
 

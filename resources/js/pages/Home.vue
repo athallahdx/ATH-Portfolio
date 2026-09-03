@@ -46,6 +46,7 @@ interface TechstackItem {
 
 interface ExpertiseItem {
     id: number;
+    icon: string;
     name: string;
     description: string;
     sort_order: number;
@@ -245,30 +246,24 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
 
                 <!-- Avatar / Visual Element -->
                 <div class="order-1 flex justify-center lg:order-2 lg:col-span-5 lg:justify-end">
-                    <div class="relative h-64 w-64 sm:h-80 sm:w-80 lg:h-88 lg:w-88">
-                        <div class="absolute -inset-px rounded-2xl bg-linear-to-br from-blue-500/50 via-indigo-500/20 to-transparent"></div>
-
-                        <div class="absolute inset-px overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950 p-2">
-                            <img 
-                                v-if="hero?.image" 
-                                :src="getImageUrl(hero.image)" 
-                                alt="Athallah Tsany Satriyaji" 
-                                class="h-full w-full rounded-xl object-cover grayscale transition-all duration-500 hover:grayscale-0"
-                            />
-                            <!-- Fallback profile illustration / abstract styling -->
-                            <div v-else class="flex h-full w-full flex-col items-center justify-center space-y-4 rounded-xl border border-slate-800/50 bg-slate-900/60 p-6 text-center">
-                                <div class="flex h-16 w-16 items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-400">
-                                    <Code class="h-8 w-8" />
-                                </div>
-                                <div class="space-y-1">
-                                    <h3 class="text-base font-bold text-white">Athallah Tsany Satriyaji</h3>
-                                    <p class="font-mono text-xs text-blue-400">&lt;FullStackDeveloper /&gt;</p>
-                                </div>
-                                <p class="max-w-50 text-xs text-slate-400">
-                                    Specializing in Laravel, Vue 3, &amp; Tailwind CSS
-                                </p>
-                            </div>
+                    <img 
+                        v-if="hero?.image" 
+                        :src="getImageUrl(hero.image)" 
+                        alt="Athallah Tsany Satriyaji" 
+                        class="h-80 w-64 max-h-128 object-contain grayscale transition-all duration-500 hover:grayscale-0 sm:h-96 sm:w-80 lg:h-112 lg:w-88"
+                    />
+                    <!-- Fallback profile illustration / abstract styling -->
+                    <div v-else class="flex h-64 w-64 flex-col items-center justify-center space-y-4 p-6 text-center sm:h-80 sm:w-80 lg:h-88 lg:w-88">
+                        <div class="flex h-16 w-16 items-center justify-center text-blue-400">
+                            <Code class="h-8 w-8" />
                         </div>
+                        <div class="space-y-1">
+                            <h3 class="text-base font-bold text-white">Athallah Tsany Satriyaji</h3>
+                            <p class="font-mono text-xs text-blue-400">&lt;FullStackDeveloper /&gt;</p>
+                        </div>
+                        <p class="max-w-50 text-xs text-slate-400">
+                            Specializing in Laravel, Vue 3, &amp; Tailwind CSS
+                        </p>
                     </div>
                 </div>
             </div>
@@ -288,7 +283,7 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
                 <div v-if="aboutme.length > 0" class="mx-auto max-w-3xl rounded-xl border border-slate-800/60 bg-slate-900/40 p-6 sm:p-8">
                     <div class="relative min-h-55">
                         <article :key="aboutme[activeAboutIndex].id" class="animate-fade-in grid gap-6 text-left sm:grid-cols-5 sm:items-start">
-                            <div class="aspect-3/4 overflow-hidden rounded-xl border border-blue-500/30 bg-slate-950 sm:col-span-2">
+                            <div class="aspect-4/5 overflow-hidden rounded-xl border border-blue-500/30 bg-slate-950 sm:col-span-2">
                                 <img
                                     v-if="aboutme[activeAboutIndex].image"
                                     :src="getImageUrl(aboutme[activeAboutIndex].image)"
@@ -364,8 +359,8 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
                         :key="exp.id"
                         class="group rounded-xl border border-slate-800/60 bg-slate-900/30 p-6 transition-colors duration-300 hover:border-blue-500/30"
                     >
-                        <div class="mb-6 flex h-11 w-11 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-600/10 text-blue-400 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
-                            <Code class="h-5 w-5" />
+                        <div class="mb-6 flex h-11 w-11 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-600/10 text-blue-400 transition-colors duration-300 hover:border-blue-500/25 hover:bg-slate-900/80 group-hover:text-white">
+                            <img :src="`storage/${exp.icon}`" class="h-5 w-5" />
                         </div>
                         
                         <h3 class="mb-2 text-lg font-bold text-white transition-colors duration-300 group-hover:text-blue-400">
@@ -429,7 +424,7 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
                         :key="tech.id"
                         class="flex items-center gap-2.5 rounded-lg border border-slate-800/60 bg-slate-900/40 px-4 py-2.5 transition-colors duration-300 hover:border-blue-500/25 hover:bg-slate-900/80"
                     >
-                        <span class="font-mono text-sm text-blue-400">&lt;/&gt;</span>
+                        <img v-if="tech.icon" :src="`storage/${tech.icon}`" class="h-4 w-4" />
                         <span class="text-sm font-semibold text-slate-200">{{ tech.name }}</span>
                     </div>
                     

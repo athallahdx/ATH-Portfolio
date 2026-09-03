@@ -22,13 +22,20 @@ class AboutMeForm
                     ->disk('public')
                     ->directory('about-me')
                     ->imageEditor()
-                    ->getUploadedFileNameForStorageUsing(
-                        fn (TemporaryUploadedFile $file, Get $get): string => Str::slug((string) $get('title') ?: 'about-me')
-                            . '.' . $file->guessExtension(),
-                    )
+                    ->imageEditorAspectRatioOptions([
+                        null,
+                        '4:5',
+                        '2:3',
+                        '3:4'
+                    ])
                     ->acceptedFileTypes(['image/*'])
                     ->visibility('public')
                     ->downloadable()
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file, Get $get): string =>
+                            Str::slug((string) $get('title') ?: 'about-me')
+                            . '.' . $file->guessExtension(),
+                        )   
                     ->columnSpanFull(),
                 Textarea::make('description')
                     ->required()

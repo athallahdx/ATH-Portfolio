@@ -6,6 +6,9 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Filament\Schemas\Schema;
 
 class ExpertiseForm
@@ -22,6 +25,15 @@ class ExpertiseForm
                     ->visibility('public')
                     ->disk('public')
                     ->downloadable()
+                    ->imageEditor()
+                    ->getUploadedFileNameForStorageUsing(
+                        fn (TemporaryUploadedFile $file, Get $get): string => Str::slug((string) $get('name') ?: 'expertise-icon')
+                            . '.' . $file->guessExtension(),
+                    )
+                    ->imageEditorAspectRatioOptions([
+                        null,
+                        '1:1',
+                    ])
                     ->image(),
                 TextInput::make('sort_order')
                     ->required()

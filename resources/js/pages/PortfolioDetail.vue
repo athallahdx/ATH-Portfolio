@@ -234,3 +234,6 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
         </main>
     </PublicLayout>
 </template>
+
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus tempora labore sunt sit nostrum consequatur, at tempore minus ipsa dolores voluptas eos, quaerat aliquid voluptatem pariatur laborum earum fuga voluptatum! Ipsa neque, nam, inventore corrupti nisi repellat eaque ipsam temporibus explicabo ullam harum provident veniam a. Doloremque inventore minima debitis eligendi eaque, placeat quae ullam dicta commodi natus assumenda necessitatibus?
