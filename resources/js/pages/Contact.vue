@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
-import PublicLayout from '@/layouts/PublicLayout.vue';
-import { 
+import {
     Mail, 
     Phone, 
-    MessageSquare, 
     ExternalLink, 
     Send, 
-    BriefcaseBusiness, 
-    Code, 
-    Sparkles, 
-    ArrowRight,
     CheckCircle
 } from '@lucide/vue';
+import { ref } from 'vue';
+import PublicLayout from '@/layouts/PublicLayout.vue';
 
 // Define the interface for contact details from the database
 interface ContactInfo {
@@ -35,7 +30,6 @@ const contactForm = ref({
     email: '',
     whatsapp: '',
     serviceType: 'Full-Stack Development',
-    budget: '$1,000 - $3,000',
     message: ''
 });
 
@@ -62,7 +56,6 @@ const handleContactSubmit = () => {
             `- Name: ${contactForm.value.name}\n` +
             `- Email: ${contactForm.value.email}\n` +
             `- WhatsApp/Phone: ${contactForm.value.whatsapp || 'Not provided'}\n` +
-            `- Budget Range: ${contactForm.value.budget}\n\n` +
             `Project Description:\n${contactForm.value.message}`;
             
         if (submitMethod.value === 'email') {
@@ -81,7 +74,6 @@ const handleContactSubmit = () => {
             email: '',
             whatsapp: '',
             serviceType: 'Full-Stack Development',
-            budget: '$1,000 - $3,000',
             message: ''
         };
         
@@ -102,14 +94,6 @@ const serviceOptions = [
     'Other Consulting / Custom Project'
 ];
 
-// Budget options
-const budgetOptions = [
-    '< $1,000',
-    '$1,000 - $3,000',
-    '$3,000 - $5,000',
-    '$5,000 - $10,000',
-    '$10,000+'
-];
 </script>
 
 <template>
@@ -120,7 +104,7 @@ const budgetOptions = [
         <div class="relative min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#030712]">
             <!-- Subtle background grids & glow -->
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.06),transparent_60%)] pointer-events-none z-0"></div>
-            <div class="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent pointer-events-none"></div>
+            <div class="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-linear-to-r from-transparent via-blue-500/20 to-transparent pointer-events-none"></div>
 
             <div class="max-w-6xl mx-auto w-full relative z-10 space-y-12">
                 <!-- Header Title -->
@@ -130,7 +114,7 @@ const budgetOptions = [
                         Let's build something epic
                     </div>
                     <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-                        Start a Project with <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Athallah</span>
+                        Start a Project with <span class="bg-linear-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Athallah</span>
                     </h1>
                     <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto">
                         Need a custom application, scalable backend structure, or full-stack solution? Get in touch and let's discuss details.
@@ -161,7 +145,7 @@ const budgetOptions = [
                                     <div class="h-11 w-11 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
                                         <Mail class="w-5 h-5" />
                                     </div>
-                                    <div class="flex-grow">
+                                    <div class="grow">
                                         <p class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Email Address</p>
                                         <a :href="'mailto:' + contact.email" class="text-sm font-semibold text-slate-200 hover:text-blue-400 transition-colors">
                                             {{ contact.email }}
@@ -173,7 +157,7 @@ const budgetOptions = [
                                     <div class="h-11 w-11 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
                                         <Phone class="w-5 h-5" />
                                     </div>
-                                    <div class="flex-grow">
+                                    <div class="grow">
                                         <p class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">WhatsApp / Phone</p>
                                         <a :href="'https://wa.me/' + contact.whatsapp.replace(/\D/g, '')" target="_blank" class="text-sm font-semibold text-slate-200 hover:text-emerald-400 transition-colors">
                                             {{ contact.whatsapp }}
@@ -192,7 +176,7 @@ const budgetOptions = [
                                         target="_blank" 
                                         class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 font-semibold text-sm text-slate-300 transition-all duration-300"
                                     >
-                                        <Code class="w-4 h-4 text-slate-400" />
+                                        <img src="/images/github-white.png" alt="GitHub" class="w-5 h-5" />
                                         GitHub
                                         <ExternalLink class="w-3 h-3 text-slate-500" />
                                     </a>
@@ -202,7 +186,7 @@ const budgetOptions = [
                                         target="_blank" 
                                         class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 font-semibold text-sm text-slate-300 transition-all duration-300"
                                     >
-                                        <BriefcaseBusiness class="w-4 h-4 text-blue-400" />
+                                        <img src="/images/linkedin.png" alt="LinkedIn" class="w-4 h-4" />
                                         LinkedIn
                                         <ExternalLink class="w-3 h-3 text-slate-500" />
                                     </a>
@@ -212,7 +196,7 @@ const budgetOptions = [
                                         target="_blank" 
                                         class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 font-semibold text-sm text-slate-300 transition-all duration-300"
                                     >
-                                        <Sparkles class="w-4 h-4 text-purple-400" />
+                                        <img src="/images/instagram.png" alt="Instagram" class="w-4 h-4" />
                                         Instagram
                                         <ExternalLink class="w-3 h-3 text-slate-500" />
                                     </a>
@@ -276,24 +260,6 @@ const budgetOptions = [
                                             {{ option }}
                                         </option>
                                     </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="budget" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Estimated Budget Range</label>
-                                <div class="flex flex-wrap gap-2">
-                                    <button 
-                                        type="button" 
-                                        v-for="bOpt in budgetOptions" 
-                                        :key="bOpt"
-                                        @click="contactForm.budget = bOpt"
-                                        class="px-4 py-2 text-xs font-semibold rounded-lg border transition-all duration-200 cursor-pointer"
-                                        :class="contactForm.budget === bOpt 
-                                            ? 'bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/20' 
-                                            : 'bg-slate-950 border-slate-850 text-slate-400 hover:border-slate-700 hover:text-white'"
-                                    >
-                                        {{ bOpt }}
-                                    </button>
                                 </div>
                             </div>
 

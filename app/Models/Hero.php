@@ -5,21 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class AboutMe extends Model
+class Hero extends Model
 {
-    protected $table = 'about_me';
+    protected $table = 'hero';
 
     protected $fillable = [
-        'title',
+        'position',
         'image',
         'description',
     ];
 
     protected static function booted(): void
     {
-        static::updating(function (AboutMe $aboutMe) {
-            if ($aboutMe->isDirty('image')) {
-                $oldPath = $aboutMe->getOriginal('image');
+        static::updating(function (Hero $hero) {
+            if ($hero->isDirty('image')) {
+                $oldPath = $hero->getOriginal('image');
 
                 if ($oldPath) {
                     Storage::disk('public')->delete($oldPath);
@@ -27,9 +27,9 @@ class AboutMe extends Model
             }
         });
 
-        static::deleted(function (AboutMe $aboutMe) {
-            if ($aboutMe->image) {
-                Storage::disk('public')->delete($aboutMe->image);
+        static::deleted(function (Hero $hero) {
+            if ($hero->image) {
+                Storage::disk('public')->delete($hero->image);
             }
         });
     }

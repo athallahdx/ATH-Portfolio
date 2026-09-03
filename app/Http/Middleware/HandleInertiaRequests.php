@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -37,6 +38,9 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            'contact' => fn (): ?array => Contact::query()
+                ->first(['name', 'email', 'whatsapp', 'linkedin', 'github', 'instagram'])
+                ?->only(['name', 'email', 'whatsapp', 'linkedin', 'github', 'instagram']),
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),

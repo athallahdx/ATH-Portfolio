@@ -11,6 +11,10 @@ class PortfolioController extends Controller
 {
     public function index(Request $request): Response
     {
+        $hasActivePortfolios = Portfolio::query()
+            ->where('is_active', true)
+            ->exists();
+
         $portfolios = Portfolio::query()
             ->with([
                 'images',
@@ -42,6 +46,7 @@ class PortfolioController extends Controller
 
         return inertia('Portfolio', [
             'portfolios' => $portfolios,
+            'hasActivePortfolios' => $hasActivePortfolios,
             'types' => $types,
             'filters' => $request->only(['tag', 'techstack', 'type']),
         ]);

@@ -8,6 +8,7 @@ use App\Models\CurriculumVitae;
 use App\Models\Expertise;
 use App\Models\Portfolio;
 use App\Models\Techstack;
+use App\Models\Hero;
 use Inertia\Response;
 
 class HomeController extends Controller
@@ -30,7 +31,10 @@ class HomeController extends Controller
 
         $contact = Contact::first();
 
+        $hero = Hero::first();
+
         return inertia('Home', [
+            'hero' => $hero,
             'aboutme' => $aboutme,
             'curriculumvitae' => $curriculumvitae,
             'portfolios' => $portfolios,

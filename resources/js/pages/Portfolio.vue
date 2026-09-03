@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import PublicLayout from '@/layouts/PublicLayout.vue';
 import { 
     Code, 
     ArrowRight, 
@@ -9,8 +8,9 @@ import {
     Folder, 
     Tag as TagIcon,
     X,
-    Layers
 } from '@lucide/vue';
+import { computed } from 'vue';
+import PublicLayout from '@/layouts/PublicLayout.vue';
 
 interface TechstackItem {
     id: number;
@@ -60,20 +60,26 @@ interface PaginatedPortfolios {
 }
 
 const props = defineProps<{
-    portfolios: PaginatedPortfolios;
-    types: PortfolioType[];
-    filters: {
+    portfolios?: PaginatedPortfolios;
+    hasActivePortfolios?: boolean;
+    types?: PortfolioType[];
+    filters?: {
         tag?: string;
         techstack?: string;
         type?: string;
     };
 }>();
 
+const hasActiveFilters = computed(() => Boolean(
+    props.filters?.type || props.filters?.tag || props.filters?.techstack,
+));
+
 // Formats portfolio dates
 const formatDateRange = (start: string, end: string | null) => {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
     const startDate = new Date(start).toLocaleDateString('en-US', options);
     const endDate = end ? new Date(end).toLocaleDateString('en-US', options) : 'Present';
+    
     return `${startDate} - ${endDate}`;
 };
 </script>
@@ -90,7 +96,7 @@ const formatDateRange = (start: string, end: string | null) => {
                 <!-- Header -->
                 <div class="mx-auto max-w-3xl space-y-5 text-center">
                     <h1 class="max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-                        My <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Project Directory</span>
+                        My <span class="bg-linear-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Project Directory</span>
                     </h1>
                     <p class="mx-auto max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
                         Explore detailed case studies and technical architectures of platforms, API setups, and systems I have designed and deployed.
@@ -101,7 +107,7 @@ const formatDateRange = (start: string, end: string | null) => {
                 <div class="mx-auto max-w-5xl space-y-5 border-y border-slate-800/80 px-1 py-5 sm:px-2">
                     <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                         <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Filter by type</h2>
-                        <div v-if="filters.type || filters.tag || filters.techstack" class="flex">
+                        <div v-if="filters?.type || filters?.tag || filters?.techstack" class="flex">
                             <Link 
                                 href="/portfolio" 
                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500 hover:text-white transition-all text-xs font-semibold"
@@ -117,7 +123,7 @@ const formatDateRange = (start: string, end: string | null) => {
                         <Link 
                             href="/portfolio" 
                             class="px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300"
-                            :class="!filters.type 
+                            :class="!filters?.type 
                                 ? 'bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/20' 
                                 : 'bg-slate-950 border-slate-850 text-slate-400 hover:border-slate-700 hover:text-white'"
                         >
@@ -125,11 +131,11 @@ const formatDateRange = (start: string, end: string | null) => {
                         </Link>
                         
                         <Link 
-                            v-for="pType in types" 
+                            v-for="pType in types ?? []" 
                             :key="pType.id"
                             :href="'/portfolio?type=' + encodeURIComponent(pType.name)"
                             class="px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300"
-                            :class="filters.type === pType.name 
+                            :class="filters?.type === pType.name 
                                 ? 'bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/25' 
                                 : 'bg-slate-950 border-slate-850 text-slate-400 hover:border-slate-700 hover:text-white'"
                         >
@@ -138,13 +144,13 @@ const formatDateRange = (start: string, end: string | null) => {
                     </div>
 
                     <!-- Active Tag / Techstack Alert -->
-                    <div v-if="filters.tag || filters.techstack" class="flex flex-wrap gap-2 items-center pt-2 text-xs">
+                    <div v-if="filters?.tag || filters?.techstack" class="flex flex-wrap gap-2 items-center pt-2 text-xs">
                         <span class="text-slate-500 font-semibold uppercase tracking-wider">Active Filters:</span>
-                        <div v-if="filters.tag" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/25 text-blue-400 font-medium">
+                        <div v-if="filters?.tag" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/25 text-blue-400 font-medium">
                             <TagIcon class="w-3.5 h-3.5" />
                             Tag: {{ filters.tag }}
                         </div>
-                        <div v-if="filters.techstack" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 font-medium">
+                        <div v-if="filters?.techstack" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 font-medium">
                             <Code class="w-3.5 h-3.5" />
                             Techstack: {{ filters.techstack }}
                         </div>
@@ -152,7 +158,7 @@ const formatDateRange = (start: string, end: string | null) => {
                 </div>
 
                 <!-- Portfolios Grid -->
-                <div v-if="portfolios.data.length > 0" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+                <div v-if="portfolios?.data?.length" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
                     <div 
                         v-for="proj in portfolios.data" 
                         :key="proj.id"
@@ -167,7 +173,7 @@ const formatDateRange = (start: string, end: string | null) => {
                                 class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                             />
                             <!-- Placeholder gradient visual -->
-                            <div v-else class="w-full h-full bg-gradient-to-tr from-slate-900 via-blue-950/20 to-slate-900 flex flex-col items-center justify-center p-6 text-center space-y-2">
+                            <div v-else class="w-full h-full bg-linear-to-tr from-slate-900 via-blue-950/20 to-slate-900 flex flex-col items-center justify-center p-6 text-center space-y-2">
                                 <span class="h-10 w-10 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                                     <Code class="w-5 h-5" />
                                 </span>
@@ -176,7 +182,7 @@ const formatDateRange = (start: string, end: string | null) => {
                         </div>
 
                         <!-- Project Information -->
-                        <div class="flex flex-grow flex-col justify-between space-y-7 p-5 sm:p-6">
+                        <div class="flex grow flex-col justify-between space-y-7 p-5 sm:p-6">
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between text-xs text-slate-500">
                                     <span class="flex items-center gap-1">
@@ -242,11 +248,22 @@ const formatDateRange = (start: string, end: string | null) => {
                     <div class="h-12 w-12 rounded-xl bg-slate-800 flex items-center justify-center text-slate-500 mx-auto">
                         <Folder class="w-6 h-6" />
                     </div>
-                    <h3 class="text-lg font-bold text-white">No projects found</h3>
+                    <h3 class="text-lg font-bold text-white">
+                        {{ !portfolios
+                            ? 'Portfolio data is unavailable'
+                            : !props.hasActivePortfolios
+                                ? 'No portfolio projects available'
+                                : 'No projects found' }}
+                    </h3>
                     <p class="text-slate-400 text-sm max-w-sm mx-auto">
-                        No projects match the selected active filters. Try clearing filters to see the full list of works.
+                        {{ !portfolios
+                            ? 'Portfolio projects could not be loaded right now. Please check back later.'
+                            : !props.hasActivePortfolios
+                                ? 'There are currently no active portfolio projects to display.'
+                                : 'No projects match the selected active filters. Try clearing filters to see the full list of works.' }}
                     </p>
                     <Link 
+                        v-if="hasActiveFilters"
                         href="/portfolio" 
                         class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-xs text-slate-200 border border-slate-750"
                     >
@@ -255,17 +272,18 @@ const formatDateRange = (start: string, end: string | null) => {
                 </div>
 
                 <!-- Pagination Links -->
-                <div v-if="portfolios.links && portfolios.links.length > 3" class="flex justify-center items-center gap-1.5 pt-6">
+                <div v-if="portfolios?.links && portfolios.links.length > 3" class="flex justify-center items-center gap-1.5 pt-6">
                     <Link 
                         v-for="(link, index) in portfolios.links" 
                         :key="index"
                         :href="link.url || '#'"
-                        v-html="link.label"
                         class="px-4 py-2 text-xs font-semibold rounded-lg border transition-all duration-200"
                         :class="link.active 
                             ? 'bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/20' 
                             : (!link.url ? 'text-slate-650 cursor-not-allowed border-slate-900' : 'bg-slate-900/40 border-slate-850 text-slate-400 hover:border-slate-700 hover:text-white')"
-                    />
+                    >
+                        <span v-html="link.label"></span>
+                    </Link>
                 </div>
             </div>
         </div>

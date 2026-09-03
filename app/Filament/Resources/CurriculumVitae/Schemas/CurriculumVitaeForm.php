@@ -20,6 +20,7 @@ class CurriculumVitaeForm
                     ->required()
                     ->directory('cv')
                     ->disk('public')
+                    ->preserveFilenames()
                     ->acceptedFileTypes(['application/pdf'])
                     ->visibility('public')
                     ->downloadable(),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\AboutMe\Schemas;
+namespace App\Filament\Resources\Hero\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
@@ -10,20 +10,20 @@ use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class AboutMeForm
+class HeroForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('title')
+                TextInput::make('position')
                     ->required(),
                 FileUpload::make('image')
                     ->disk('public')
-                    ->directory('about-me')
+                    ->directory('hero')
                     ->imageEditor()
                     ->getUploadedFileNameForStorageUsing(
-                        fn (TemporaryUploadedFile $file, Get $get): string => Str::slug((string) $get('title') ?: 'about-me')
+                        fn (TemporaryUploadedFile $file, Get $get): string => Str::slug((string) $get('position') ?: 'hero')
                             . '.' . $file->guessExtension(),
                     )
                     ->acceptedFileTypes(['image/*'])

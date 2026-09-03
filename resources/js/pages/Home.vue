@@ -1,22 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import PublicLayout from '@/layouts/PublicLayout.vue';
-import { portfolio, contact as contactRoute } from '@/routes';
 import { 
-    BriefcaseBusiness, 
     Download, 
     ArrowRight, 
     Mail, 
     Phone, 
-    MessageSquare, 
     ExternalLink, 
-    Sparkles,
-    Briefcase,
-    BookOpen,
     Code,
-    Send
+    Send,
+    ChevronLeft,
+    ChevronRight
 } from '@lucide/vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+import PublicLayout from '@/layouts/PublicLayout.vue';
+import { portfolio, contact as contactRoute } from '@/routes';
 
 // Define the interface for props passed by controller
 interface AboutMeItem {
@@ -26,11 +23,16 @@ interface AboutMeItem {
     description: string;
 }
 
+interface HeroItem {
+    position: string;
+    image: string;
+    description: string;
+}
+
 interface CVItem {
     id: number;
     name: string;
-    version: string;
-    file: string;
+    cv: string;
     is_active: boolean;
 }
 
@@ -78,6 +80,7 @@ interface ContactInfo {
 }
 
 const props = defineProps<{
+    hero: HeroItem | null;
     aboutme: AboutMeItem[];
     curriculumvitae: CVItem | null;
     portfolios: PortfolioItem[];
@@ -86,8 +89,32 @@ const props = defineProps<{
     contact: ContactInfo | null;
 }>();
 
-// Active tab for About Me section (e.g. Experience vs Education)
-const activeAboutTab = ref('experience');
+const activeAboutIndex = ref(0);
+let aboutCarouselInterval: ReturnType<typeof setInterval> | undefined;
+
+const showNextAbout = () => {
+    if (props.aboutme.length > 0) {
+        activeAboutIndex.value = (activeAboutIndex.value + 1) % props.aboutme.length;
+    }
+};
+
+const showPreviousAbout = () => {
+    if (props.aboutme.length > 0) {
+        activeAboutIndex.value = (activeAboutIndex.value - 1 + props.aboutme.length) % props.aboutme.length;
+    }
+};
+
+onMounted(() => {
+    if (props.aboutme.length > 1) {
+        aboutCarouselInterval = setInterval(showNextAbout, 5000);
+    }
+});
+
+onUnmounted(() => {
+    if (aboutCarouselInterval) {
+        clearInterval(aboutCarouselInterval);
+    }
+});
 
 // Form state for Contact Form
 const contactForm = ref({
@@ -142,12 +169,15 @@ const formatDateRange = (start: string, end: string | null) => {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
     const startDate = new Date(start).toLocaleDateString('en-US', options);
     const endDate = end ? new Date(end).toLocaleDateString('en-US', options) : 'Present';
+    
     return `${startDate} - ${endDate}`;
 };
 
 // Default about description if database is empty
 const defaultHeroDescription = "I am a Full Stack Developer dedicated to crafting clean, high-performance web applications. I specialize in building end-to-end solutions that merge sophisticated backend logic with intuitive, interactive user interfaces.";
 const defaultAboutMe = "I am a passionate software engineer with experience developing enterprise-grade systems and customer-centric platforms. My focus is on writing maintainable, well-tested code and implementing state-of-the-art UI/UX patterns that captivate users.";
+
+const getImageUrl = (image: string) => image.startsWith('http') ? image : `/storage/${image}`;
 </script>
 
 <template>
@@ -158,7 +188,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
         <section class="relative flex min-h-[calc(100vh-4.5rem)] items-center px-4 py-20 sm:px-6 lg:px-8">
             <div class="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-16 lg:grid-cols-12 lg:gap-12">
                 <!-- Text Intro -->
-                <div class="lg:col-span-7">
+                <div class="order-2 lg:order-1 lg:col-span-7">
                     <div class="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/5 px-3 py-1 text-xs font-medium tracking-wide text-blue-300">
                         <span class="relative flex h-1.5 w-1.5">
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
@@ -169,15 +199,15 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
                     <h1 class="mt-6 max-w-2xl text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
                         Hi, I'm
-                        <span class="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Athallah Tsany</span>
+                        <span class="bg-linear-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Athallah Tsany</span>
                     </h1>
 
                     <h2 class="mt-3 text-lg font-medium text-slate-400 sm:text-xl">
-                        Full Stack Web Developer
+                        {{ hero?.position ?? 'Full Stack Web Developer' }}
                     </h2>
 
                     <p class="mt-6 max-w-xl text-base leading-relaxed text-slate-400">
-                        {{ aboutme[0]?.description ?? defaultHeroDescription }}
+                        {{ hero?.description ?? defaultHeroDescription }}
                     </p>
 
                     <!-- Call to Actions -->
@@ -192,7 +222,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
                         <a 
                             v-if="curriculumvitae" 
-                            :href="'/storage/' + curriculumvitae.file" 
+                            :href="'/storage/' + curriculumvitae.cv" 
                             download 
                             class="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-5 py-2.5 text-sm font-semibold text-slate-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
                         >
@@ -204,23 +234,24 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                             v-if="contact?.linkedin" 
                             :href="contact.linkedin" 
                             target="_blank" 
-                            class="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-400 transition-colors duration-300 hover:text-white"
+                            class="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-400 transition-colors duration-300 hover:text-white border-2 border-slate-800 hover:border-blue-500/50 hover:bg-blue-600/20 hover:-translate-y-0.5"
                         >
-                            <BriefcaseBusiness class="h-4 w-4 text-blue-400" />
+                            <img src="/images/linkedin.png" class="h-5 w-5 m-0" alt="LinkedIn">
                             LinkedIn
+                            <ExternalLink class="h-4 w-4" />
                         </a>
                     </div>
                 </div>
 
                 <!-- Avatar / Visual Element -->
-                <div class="flex justify-center lg:col-span-5 lg:justify-end">
-                    <div class="relative h-64 w-64 sm:h-80 sm:w-80 lg:h-[22rem] lg:w-[22rem]">
-                        <div class="absolute -inset-px rounded-2xl bg-gradient-to-br from-blue-500/50 via-indigo-500/20 to-transparent"></div>
+                <div class="order-1 flex justify-center lg:order-2 lg:col-span-5 lg:justify-end">
+                    <div class="relative h-64 w-64 sm:h-80 sm:w-80 lg:h-88 lg:w-88">
+                        <div class="absolute -inset-px rounded-2xl bg-linear-to-br from-blue-500/50 via-indigo-500/20 to-transparent"></div>
 
-                        <div class="absolute inset-[1px] overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950 p-2">
+                        <div class="absolute inset-px overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950 p-2">
                             <img 
-                                v-if="aboutme[0]?.image" 
-                                :src="'/storage/' + aboutme[0].image" 
+                                v-if="hero?.image" 
+                                :src="getImageUrl(hero.image)" 
                                 alt="Athallah Tsany Satriyaji" 
                                 class="h-full w-full rounded-xl object-cover grayscale transition-all duration-500 hover:grayscale-0"
                             />
@@ -233,7 +264,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                                     <h3 class="text-base font-bold text-white">Athallah Tsany Satriyaji</h3>
                                     <p class="font-mono text-xs text-blue-400">&lt;FullStackDeveloper /&gt;</p>
                                 </div>
-                                <p class="max-w-[200px] text-xs text-slate-400">
+                                <p class="max-w-50 text-xs text-slate-400">
                                     Specializing in Laravel, Vue 3, &amp; Tailwind CSS
                                 </p>
                             </div>
@@ -250,96 +281,67 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                     <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// about-me</p>
                     <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">About Me</h2>
                     <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
-                        {{ aboutme[1]?.description ?? defaultAboutMe }}
+                        Get to know me through my background, experience, and approach to building software.
                     </p>
                 </div>
 
-                <!-- Experience & Education Slider/Tabs -->
-                <div class="mx-auto max-w-3xl rounded-xl border border-slate-800/60 bg-slate-900/40 p-6 sm:p-8">
-                    <div class="mb-8 flex justify-center border-b border-slate-800 pb-6">
-                        <div class="inline-flex rounded-lg border border-slate-800/80 bg-slate-950 p-1">
-                            <button 
-                                @click="activeAboutTab = 'experience'" 
-                                class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-300"
-                                :class="activeAboutTab === 'experience' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'"
+                <div v-if="aboutme.length > 0" class="mx-auto max-w-3xl rounded-xl border border-slate-800/60 bg-slate-900/40 p-6 sm:p-8">
+                    <div class="relative min-h-55">
+                        <article :key="aboutme[activeAboutIndex].id" class="animate-fade-in grid gap-6 text-left sm:grid-cols-5 sm:items-start">
+                            <div class="aspect-3/4 overflow-hidden rounded-xl border border-blue-500/30 bg-slate-950 sm:col-span-2">
+                                <img
+                                    v-if="aboutme[activeAboutIndex].image"
+                                    :src="getImageUrl(aboutme[activeAboutIndex].image)"
+                                    :alt="aboutme[activeAboutIndex].title"
+                                    class="h-full w-full object-cover"
+                                />
+                                <div v-else class="flex h-full items-center justify-center p-6 text-center text-sm text-slate-500">
+                                    About Me
+                                </div>
+                            </div>
+                            <div class="space-y-4 sm:col-span-3">
+                                <h3 class="text-xl font-bold text-white">
+                                    {{ aboutme[activeAboutIndex].title }}
+                                </h3>
+                                <p class="text-sm leading-relaxed text-slate-400 sm:text-base">
+                                    {{ aboutme[activeAboutIndex].description }}
+                                </p>
+                            </div>
+                        </article>
+
+                        <div v-if="aboutme.length > 1" class="mt-8 flex items-center justify-between border-t border-slate-800 pt-5">
+                            <button
+                                type="button"
+                                aria-label="Previous About Me entry"
+                                class="rounded-lg border border-slate-700 p-2 text-slate-300 transition-colors hover:border-blue-500 hover:text-white"
+                                @click="showPreviousAbout"
                             >
-                                <Briefcase class="h-4 w-4" />
-                                Experience
+                                <ChevronLeft class="h-4 w-4" />
                             </button>
-                            <button 
-                                @click="activeAboutTab = 'education'" 
-                                class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-300"
-                                :class="activeAboutTab === 'education' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'"
+                            <div class="flex gap-2" aria-label="About Me entries">
+                                <button
+                                    v-for="(item, index) in aboutme"
+                                    :key="item.id"
+                                    type="button"
+                                    :aria-label="`Show ${item.title}`"
+                                    class="h-2.5 w-2.5 rounded-full transition-colors"
+                                    :class="index === activeAboutIndex ? 'bg-blue-400' : 'bg-slate-700 hover:bg-slate-500'"
+                                    @click="activeAboutIndex = index"
+                                ></button>
+                            </div>
+                            <button
+                                type="button"
+                                aria-label="Next About Me entry"
+                                class="rounded-lg border border-slate-700 p-2 text-slate-300 transition-colors hover:border-blue-500 hover:text-white"
+                                @click="showNextAbout"
                             >
-                                <BookOpen class="h-4 w-4" />
-                                Education
+                                <ChevronRight class="h-4 w-4" />
                             </button>
                         </div>
                     </div>
-
-                    <!-- Slide Contents -->
-                    <div class="relative min-h-[220px]">
-                        <!-- Tab 1: Experience -->
-                        <div v-if="activeAboutTab === 'experience'" class="animate-fade-in space-y-8">
-                            <div class="relative ml-3 space-y-8 border-l border-blue-500/20 pl-6 sm:pl-8">
-                                <!-- Experience Item 1 -->
-                                <div class="relative">
-                                    <span class="absolute -left-[35px] top-1.5 h-3.5 w-3.5 rounded-full border-4 border-slate-950 bg-blue-500"></span>
-                                    <div class="space-y-2">
-                                        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                                            <h4 class="text-base font-bold text-white">Lead Full-Stack Developer</h4>
-                                            <span class="inline-flex w-fit items-center rounded-md border border-blue-500/25 bg-blue-500/10 px-2.5 py-1 text-xs font-semibold text-blue-400">
-                                                2024 - Present
-                                            </span>
-                                        </div>
-                                        <p class="text-sm font-medium text-slate-300">Independent Software Engineer &amp; Tech Lead</p>
-                                        <p class="text-sm leading-relaxed text-slate-400">
-                                            Designing and shipping scalable products for various startups. Built custom e-commerce engines, real-time messaging platforms, and structured management platforms using Laravel, Inertia, Vue, and Tailind CSS.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Experience Item 2 -->
-                                <div class="relative">
-                                    <span class="absolute -left-[35px] top-1.5 h-3.5 w-3.5 rounded-full border-4 border-slate-950 bg-blue-500/50"></span>
-                                    <div class="space-y-2">
-                                        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                                            <h4 class="text-base font-bold text-white">Full Stack Web Developer</h4>
-                                            <span class="inline-flex w-fit items-center rounded-md border border-slate-700 bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-400">
-                                                2022 - 2024
-                                            </span>
-                                        </div>
-                                        <p class="text-sm font-medium text-slate-300">Software Development Firm</p>
-                                        <p class="text-sm leading-relaxed text-slate-400">
-                                            Designed RESTful APIs, optimized databases, and engineered reactive user interfaces. Implemented robust authorization systems, automated tests, and streamlined deployment pipelines.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tab 2: Education -->
-                        <div v-if="activeAboutTab === 'education'" class="animate-fade-in space-y-8">
-                            <div class="relative ml-3 space-y-8 border-l border-indigo-500/20 pl-6 sm:pl-8">
-                                <!-- Education Item 1 -->
-                                <div class="relative">
-                                    <span class="absolute -left-[35px] top-1.5 h-3.5 w-3.5 rounded-full border-4 border-slate-950 bg-indigo-500"></span>
-                                    <div class="space-y-2">
-                                        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                                            <h4 class="text-base font-bold text-white">Bachelor of Computer Science</h4>
-                                            <span class="inline-flex w-fit items-center rounded-md border border-indigo-500/25 bg-indigo-500/10 px-2.5 py-1 text-xs font-semibold text-indigo-400">
-                                                Graduated
-                                            </span>
-                                        </div>
-                                        <p class="text-sm font-medium text-slate-300">Major in Software Engineering</p>
-                                        <p class="text-sm leading-relaxed text-slate-400">
-                                            Acquired foundational and advanced knowledge of algorithms, database architectures, network communication, object-oriented design patterns, and human-computer interaction.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div v-else class="mx-auto max-w-3xl rounded-xl border border-slate-800/60 bg-slate-900/40 p-8 text-center">
+                    <p class="text-sm leading-relaxed text-slate-400">{{ defaultAboutMe }}</p>
                 </div>
             </div>
         </section>
@@ -443,7 +445,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
         </section>
 
         <!-- SECTION 6: PORTFOLIO BRIEF -->
-        <section class="border-t border-slate-900 bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+        <section v-if="portfolios?.length" class="border-t border-slate-900 bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <div class="mx-auto max-w-6xl">
                 <div class="mb-14 flex flex-col gap-6 sm:mb-16 md:flex-row md:items-end md:justify-between">
                     <div class="max-w-2xl">
@@ -480,7 +482,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                                 class="h-full w-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
                             />
                             <!-- Placeholder gradient visual -->
-                            <div v-else class="flex h-full w-full flex-col items-center justify-center space-y-2 bg-gradient-to-tr from-slate-900 via-blue-950/20 to-slate-900 p-6 text-center">
+                            <div v-else class="flex h-full w-full flex-col items-center justify-center space-y-2 bg-linear-to-tr from-slate-900 via-blue-950/20 to-slate-900 p-6 text-center">
                                 <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-600/10 text-blue-400">
                                     <Code class="h-5 w-5" />
                                 </span>
@@ -489,7 +491,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                         </div>
 
                         <!-- Info -->
-                        <div class="flex flex-grow flex-col justify-between space-y-6 p-6">
+                        <div class="flex grow flex-col justify-between space-y-6 p-6">
                             <div class="space-y-3">
                                 <span class="text-xs text-slate-500">{{ formatDateRange(proj.start_date, proj.end_date) }}</span>
                                 <h3 class="text-lg font-bold text-white">
@@ -573,7 +575,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
 
                         <div class="mt-6 space-y-4">
                             <div v-if="contact?.email" class="flex items-center gap-4">
-                                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 text-blue-400">
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 text-blue-400">
                                     <Mail class="h-5 w-5" />
                                 </div>
                                 <div>
@@ -585,7 +587,7 @@ const defaultAboutMe = "I am a passionate software engineer with experience deve
                             </div>
 
                             <div v-if="contact?.whatsapp" class="flex items-center gap-4">
-                                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 text-blue-400">
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 text-blue-400">
                                     <Phone class="h-5 w-5" />
                                 </div>
                                 <div>
