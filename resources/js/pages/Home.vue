@@ -13,7 +13,9 @@ import {
 } from '@lucide/vue';
 import { onMounted, onUnmounted, ref } from 'vue';
 import PublicLayout from '@/layouts/PublicLayout.vue';
-import { portfolio, contact as contactRoute } from '@/routes';
+import { portfolio, work, contact as contactRoute} from '@/routes';
+import { show as portfolioShow } from '@/routes/portfolio';
+import { show as workShow } from '@/routes/work';
 
 // Define the interface for props passed by controller
 interface AboutMeItem {
@@ -56,6 +58,7 @@ interface ExpertiseItem {
 interface PortfolioItem {
     id: number;
     title: string;
+    slug: string;
     description: string;
     start_date: string;
     end_date: string | null;
@@ -68,6 +71,22 @@ interface PortfolioItem {
     images?: {
         image: string;
         label: string;
+    }[];
+}
+
+interface WorkItem {
+    id: number;
+    title: string;
+    slug: string;
+    description: string | null;
+    client: string | null;
+    start_date: string | null;
+    end_date: string | null;
+    url: string | null;
+    tags?: { id: number; name: string }[];
+    images?: {
+        image: string;
+        label: string | null;
     }[];
 }
 
@@ -85,6 +104,7 @@ const props = defineProps<{
     aboutme: AboutMeItem[];
     curriculumvitae: CVItem | null;
     portfolios: PortfolioItem[];
+    works: WorkItem[];
     expertises: ExpertiseItem[];
     techstacks: TechstackItem[];
     contact: ContactInfo | null;
@@ -166,7 +186,11 @@ const handleContactSubmit = () => {
 };
 
 // Formats portfolio dates
-const formatDateRange = (start: string, end: string | null) => {
+const formatDateRange = (start: string | null, end: string | null) => {
+    if (!start) {
+        return 'Dates not specified';
+    }
+
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
     const startDate = new Date(start).toLocaleDateString('en-US', options);
     const endDate = end ? new Date(end).toLocaleDateString('en-US', options) : 'Present';
@@ -444,8 +468,8 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
             <div class="mx-auto max-w-6xl">
                 <div class="mb-14 flex flex-col gap-6 sm:mb-16 md:flex-row md:items-end md:justify-between">
                     <div class="max-w-2xl">
-                        <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// recent-work</p>
-                        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Recent Work</h2>
+                        <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// recent-projects</p>
+                        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Recent Projects</h2>
                         <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
                             A curated showcase of web apps, tools, and platforms I've recently built.
                         </p>
@@ -492,9 +516,7 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
                                 <h3 class="text-lg font-bold text-white">
                                     {{ proj.title }}
                                 </h3>
-                                <p class="line-clamp-3 text-sm leading-relaxed text-slate-400">
-                                    {{ proj.description }}
-                                </p>
+                               
                             </div>
 
                             <div class="space-y-4">
@@ -515,7 +537,7 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
                                 <!-- Link button -->
                                 <div class="flex items-center justify-between border-t border-slate-800/80 pt-4">
                                     <Link 
-                                        :href="`/portfolio/${proj.id}`" 
+                                        :href="portfolioShow({ portfolio: proj.slug }).url"
                                         class="inline-flex items-center gap-1 text-xs font-bold text-blue-400 transition-colors hover:text-blue-300"
                                     >
                                         Read Details
@@ -523,8 +545,8 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
                                     </Link>
                                     
                                     <a 
-                                        v-if="proj.url" 
-                                        :href="proj.url" 
+                                        v-if="proj.url"
+                                        :href="proj.url"
                                         target="_blank" 
                                         class="text-slate-400 transition-colors hover:text-white"
                                         aria-label="View site"
@@ -549,7 +571,107 @@ const getImageUrl = (image: string) => image.startsWith('http') ? image : `/stor
             </div>
         </section>
 
-        <!-- SECTION 7: CONTACT -->
+         <!-- SECTION 7: WORK BRIEF -->
+        <section v-if="works?.length" class="border-t border-slate-900 bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+            <div class="mx-auto max-w-6xl">
+                <div class="mb-14 flex flex-col gap-6 sm:mb-16 md:flex-row md:items-end md:justify-between">
+                    <div class="max-w-2xl">
+                        <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-blue-400/80">// recent-work</p>
+                        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Recent Work Experience</h2>
+                        <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
+                            A selection of roles, collaborations, and professional experience.
+                        </p>
+                    </div>
+                    <div>
+                        <Link 
+                            :href="work().url" 
+                            class="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition-colors hover:text-blue-300"
+                        >
+                            View All Work
+                            <ArrowRight class="h-4 w-4" />
+                        </Link>
+                    </div>
+                </div>
+
+                <!-- Portfolios Grid -->
+                <div class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div 
+                        v-for="workItem in works" 
+                        :key="workItem.id"
+                        class="flex flex-col overflow-hidden rounded-xl border border-slate-850 bg-slate-900/25 transition-colors duration-300 hover:border-slate-700/60"
+                    >
+                        <!-- Image representation -->
+                        <div class="relative flex aspect-video w-full items-center justify-center overflow-hidden border-b border-slate-900 bg-slate-950">
+                            <img 
+                                v-if="workItem.images && workItem.images.length > 0"
+                                :src="'/storage/' + workItem.images[0].image"
+                                :alt="workItem.title"
+                                class="h-full w-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
+                            />
+                            <!-- Placeholder gradient visual -->
+                            <div v-else class="flex h-full w-full flex-col items-center justify-center space-y-2 bg-linear-to-tr from-slate-900 via-blue-950/20 to-slate-900 p-6 text-center">
+                                <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-600/10 text-blue-400">
+                                    <Code class="h-5 w-5" />
+                                </span>
+                                <span class="text-xs font-bold uppercase tracking-widest text-blue-400">{{ workItem.tags?.[0]?.name ?? 'Experience' }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Info -->
+                        <div class="flex grow flex-col justify-between gap-5 p-5">
+                            <div class="space-y-2">
+                                <h3 class="text-lg font-bold leading-snug text-white">
+                                    {{ workItem.title }}
+                                </h3>
+                                <p class="line-clamp-2 text-sm leading-relaxed text-slate-400">
+                                    {{ workItem.client || 'Work experience details are coming soon.' }}
+                                </p>
+                                <p class="pt-1 text-xs text-slate-500">{{ formatDateRange(workItem.start_date, workItem.end_date) }}</p>
+                            </div>
+
+                            <div class="space-y-3">
+                                <!-- Tech tags -->
+                                <div v-if="workItem.tags && workItem.tags.length > 0" class="flex flex-wrap gap-1.5">
+                                    <span 
+                                        v-for="tag in workItem.tags.slice(0, 4)" 
+                                        :key="tag.id"
+                                        class="rounded border border-slate-800 bg-slate-950 px-2 py-0.5 text-[10px] font-semibold text-slate-300"
+                                    >
+                                        {{ tag.name }}
+                                    </span>
+                                    <span v-if="workItem.tags.length > 4" class="rounded border border-slate-800 bg-slate-950 px-2 py-0.5 text-[10px] font-semibold text-slate-400">
+                                        +{{ workItem.tags.length - 4 }} more
+                                    </span>
+                                </div>
+
+                                <!-- Link button -->
+                                <div class="flex items-center justify-between border-t border-slate-800/80 pt-3">
+                                    <Link 
+                                        :href="workShow({ portfolio: workItem.slug }).url"
+                                        class="inline-flex items-center gap-1 text-xs font-bold text-blue-400 transition-colors hover:text-blue-300"
+                                    >
+                                        View Experience
+                                        <ArrowRight class="h-3.5 w-3.5" />
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <Link 
+                        :href="work().url" 
+                        class="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-6 py-3 text-sm font-semibold text-slate-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
+                    >
+                        Browse All Work
+                        <ArrowRight class="h-4 w-4" />
+                    </Link>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: CONTACT -->
         <section class="border-t border-slate-900 bg-[#02050e]/60 px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
             <div class="mx-auto max-w-6xl">
                 <div class="mx-auto mb-14 max-w-2xl text-center sm:mb-16">

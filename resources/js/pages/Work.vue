@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { ArrowRight, BriefcaseBusiness, Calendar, Code, ExternalLink, Folder, Tag as TagIcon } from '@lucide/vue';
+import { ArrowRight, BriefcaseBusiness, Calendar, Code, Folder, Tag as TagIcon } from '@lucide/vue';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 import { show as workShow } from '@/routes/work';
 
@@ -64,8 +64,8 @@ const formatDateRange = (start: string | null, end: string | null): string => {
 					<p class="text-base leading-relaxed text-slate-400 sm:text-lg">A selection of roles, collaborations, and practical engineering work.</p>
 				</header>
 
-				<section v-if="portfolios?.data?.length" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
-					<article v-for="work in portfolios.data" :key="work.id" class="group flex flex-col overflow-hidden border border-slate-800/90 bg-slate-900/20 transition-colors hover:border-cyan-500/40">
+				<section v-if="portfolios?.data?.length" class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+					<Link v-for="work in portfolios.data" :key="work.id" :href="workShow({ portfolio: work.slug }).url" class="group flex flex-col overflow-hidden border border-slate-800/90 bg-slate-900/20 transition-colors hover:border-cyan-500/40">
 						<div class="relative aspect-video overflow-hidden border-b border-slate-900 bg-slate-950">
 							<img v-if="work.images?.[0]" :src="`/storage/${work.images[0].image}`" :alt="work.images[0].label || work.title" class="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0" />
 							<div v-else class="flex h-full flex-col items-center justify-center gap-3 bg-linear-to-tr from-slate-900 via-cyan-950/20 to-slate-900 text-cyan-300">
@@ -74,24 +74,23 @@ const formatDateRange = (start: string | null, end: string | null): string => {
 							</div>
 						</div>
 
-						<div class="flex grow flex-col justify-between gap-7 p-5 sm:p-6">
-							<div class="space-y-4">
+						<div class="flex grow flex-col justify-between gap-5 p-4 sm:p-5">
+							<div class="space-y-3">
 								<div class="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
 									<span class="inline-flex items-center gap-1.5"><Calendar class="h-3.5 w-3.5" />{{ formatDateRange(work.start_date, work.end_date) }}</span>
 									<span v-if="work.tags?.[0]" class="inline-flex items-center gap-1.5 font-semibold text-cyan-300"><TagIcon class="h-3.5 w-3.5" />{{ work.tags[0].name }}</span>
 								</div>
-								<h2 class="text-xl font-semibold leading-snug text-white transition-colors group-hover:text-cyan-300">{{ work.title }}</h2>
+								<h2 class="text-lg font-semibold leading-snug text-white transition-colors group-hover:text-cyan-300">{{ work.title }}</h2>
 								<p class="line-clamp-3 text-sm leading-relaxed text-slate-400">{{ work.description || 'Work experience details are coming soon.' }}</p>
 							</div>
 
 							<div>
 								<div class="flex items-center justify-between border-t border-slate-800/80 pt-4">
-									<Link :href="workShow({ portfolio: work.slug }).url" class="inline-flex items-center gap-1 text-xs font-bold text-cyan-300 transition-colors hover:text-cyan-200">View experience <ArrowRight class="h-3.5 w-3.5" /></Link>
-									<a v-if="work.url" :href="work.url" target="_blank" rel="noopener noreferrer" class="text-slate-400 transition-colors hover:text-white" aria-label="Open related website"><ExternalLink class="h-4 w-4" /></a>
+									<span class="inline-flex items-center gap-1 text-xs font-bold text-cyan-300 transition-colors group-hover:text-cyan-200">View experience <ArrowRight class="h-3.5 w-3.5" /></span>
 								</div>
 							</div>
 						</div>
-					</article>
+					</Link>
 				</section>
 
 				<section v-else class="space-y-4 border border-slate-800/80 bg-slate-900/20 px-6 py-20 text-center">

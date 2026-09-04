@@ -42,6 +42,7 @@ interface PortfolioItem {
     slug: string;
     title: string;
     description: string | null;
+    client: string | null;
     start_date: string | null;
     end_date: string | null;
     url: string | null;
@@ -77,20 +78,20 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
     <Head :title="`${portfolio.title} | Portfolio`" />
 
     <PublicLayout>
-        <main class="relative min-h-screen overflow-hidden bg-[#030712] px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <main class="relative min-h-screen overflow-hidden bg-[#030712] px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
             <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.08),transparent_65%)]"></div>
 
-            <div class="relative mx-auto max-w-6xl space-y-12">
+            <div class="relative mx-auto max-w-5xl space-y-8">
                 <Link
                     :href="portfolioRoute().url"
-                    class="inline-flex items-center gap-2 text-md font-semibold text-slate-400 transition-colors hover:text-white"
+                    class="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition-colors hover:text-white"
                 >
                     <ArrowLeft class="h-6 w-6" />
                     Back to projects
                 </Link>
 
                 <header class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-                    <div class="space-y-5">
+                    <div class="space-y-3">
                         <div class="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-blue-400">
                             <span v-if="portfolio.tags?.length" class="inline-flex items-center gap-1.5">
                                 <Folder class="h-4 w-4" />
@@ -102,9 +103,12 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
                                 {{ dateRange }}
                             </span>
                         </div>
-                        <h1 class="max-w-4xl text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+                        <h1 class="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
                             {{ portfolio.title }}
                         </h1>
+                        <p v-if="portfolio.client" class="text-sm font-semibold text-blue-300">
+                            Client: <span class="font-normal text-slate-400">{{ portfolio.client }}</span>
+                        </p>
                         <p class="max-w-3xl text-base leading-relaxed text-slate-400 sm:text-lg">
                             {{ portfolio.description || 'A portfolio project built with thoughtful architecture and practical engineering.' }}
                         </p>
@@ -127,17 +131,17 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
                     </div>
                 </header>
 
-                <section v-if="portfolio.images?.length" class="grid gap-4 sm:grid-cols-2">
+                <section v-if="portfolio.images?.length" class="mx-auto grid max-w-4xl gap-3 sm:grid-cols-2">
                     <figure
                         v-for="(image, index) in portfolio.images"
                         :key="image.id"
-                        class="group overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950"
+                        class="group overflow-hidden rounded-lg border border-slate-800/80 bg-slate-950"
                         :class="index === 0 ? 'sm:col-span-2' : ''"
                     >
                         <img
                             :src="getImageUrl(image.image)"
                             :alt="image.label || portfolio.title"
-                            class="aspect-video h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                            class="aspect-16/7 h-full w-full object-cover transition duration-500 group-hover:scale-[1.02] sm:aspect-video"
                         />
                         <figcaption v-if="image.label" class="border-t border-slate-800/80 px-4 py-3 text-xs text-slate-400">
                             {{ image.label }}
@@ -145,23 +149,15 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
                     </figure>
                 </section>
 
-                <section v-else class="flex min-h-64 items-center justify-center rounded-xl border border-slate-800/80 bg-slate-900/20 p-8 text-center">
+                <section v-else class="flex min-h-48 items-center justify-center rounded-lg border border-slate-800/80 bg-slate-900/20 p-6 text-center">
                     <div class="space-y-3">
                         <Code class="mx-auto h-8 w-8 text-slate-600" />
                         <p class="text-sm text-slate-500">No project images available.</p>
                     </div>
                 </section>
 
-                <div class="grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
-                    <section class="space-y-4">
-                        <h2 class="text-2xl font-bold text-white">Project overview</h2>
-                        <p class="whitespace-pre-line text-sm leading-7 text-slate-400 sm:text-base">
-                            {{ portfolio.description || 'No project overview has been added yet.' }}
-                        </p>
-                    </section>
-
-                    <aside class="space-y-6 rounded-xl border border-slate-800/80 bg-slate-900/30 p-6">
-                        <div v-if="portfolio.contributions?.length" class="space-y-3">
+                <aside class="grid w-full gap-6 rounded-lg border border-slate-800/80 bg-slate-900/30 p-5 lg:grid-cols-2">
+                    <div v-if="portfolio.contributions?.length" class="space-y-3 lg:row-span-2">
                             <h2 class="text-sm font-bold uppercase tracking-[0.16em] text-slate-300">Contributions</h2>
                             <ul class="space-y-2 text-sm text-slate-400">
                                 <li v-for="contribution in portfolio.contributions" :key="contribution" class="flex gap-2">
@@ -190,14 +186,13 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
                                 </span>
                             </div>
                         </div>
-                    </aside>
-                </div>
+                </aside>
 
-                <section v-if="related.length" class="space-y-6 border-t border-slate-800/80 pt-10">
+                <section v-if="related.length" class="space-y-5 border-t border-slate-800/80 pt-8">
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="font-mono text-xs uppercase tracking-[0.16em] text-blue-400/80">// continue-exploring</p>
-                            <h2 class="mt-2 text-2xl font-bold text-white">Related projects</h2>
+                            <h2 class="mt-2 text-xl font-bold text-white">Related projects</h2>
                         </div>
                         <Link :href="portfolioRoute().url" class="hidden text-sm font-semibold text-blue-400 hover:text-blue-300 sm:inline-flex sm:items-center sm:gap-2">
                             View all

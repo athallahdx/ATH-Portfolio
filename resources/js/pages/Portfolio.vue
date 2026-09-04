@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { 
     Code, 
     ArrowRight, 
@@ -11,6 +11,8 @@ import {
 } from '@lucide/vue';
 import { computed } from 'vue';
 import PublicLayout from '@/layouts/PublicLayout.vue';
+import { portfolio as portfolioRoute } from '@/routes';
+import { show as portfolioShow } from '@/routes/portfolio';
 
 interface TechstackItem {
     id: number;
@@ -23,10 +25,19 @@ interface TagItem {
     name: string;
 }
 
+interface FilterOptions {
+    tags: TagItem[];
+    techstacks: { id: number; name: string }[];
+}
+
+type FilterValue = string | string[];
+
 interface PortfolioItem {
     id: number;
     title: string;
+    slug: string;
     description: string;
+    client: string | null;
     start_date: string;
     end_date: string | null;
     url: string | null;
@@ -56,14 +67,41 @@ const props = defineProps<{
     portfolios?: PaginatedPortfolios;
     hasActivePortfolios?: boolean;
     filters?: {
-        tag?: string;
-        techstack?: string;
+        tag?: FilterValue;
+        techstack?: FilterValue;
     };
+    filterOptions?: FilterOptions;
 }>();
 
-const hasActiveFilters = computed(() => Boolean(
-    props.filters?.tag || props.filters?.techstack,
-));
+const selectedValues = (value?: FilterValue): string[] => value ? (Array.isArray(value) ? value : [value]) : [];
+
+const hasActiveFilters = computed(() => selectedValues(props.filters?.tag).length > 0 || selectedValues(props.filters?.techstack).length > 0);
+
+const filterUrl = (filter: 'tag' | 'techstack', value: string): string => portfolioRoute({
+    query: {
+        tag: filter === 'tag'
+            ? selectedValues(props.filters?.tag).includes(value)
+                ? selectedValues(props.filters?.tag).filter((item) => item !== value)
+                : [...selectedValues(props.filters?.tag), value]
+            : selectedValues(props.filters?.tag),
+        techstack: filter === 'techstack'
+            ? selectedValues(props.filters?.techstack).includes(value)
+                ? selectedValues(props.filters?.techstack).filter((item) => item !== value)
+                : [...selectedValues(props.filters?.techstack), value]
+            : selectedValues(props.filters?.techstack),
+    },
+}).url;
+
+const openPortfolio = (slug: string): void => {
+    router.visit(portfolioShow({ portfolio: slug }).url);
+};
+
+const handlePortfolioCardKeydown = (event: KeyboardEvent, slug: string): void => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openPortfolio(slug);
+    }
+};
 
 // Formats portfolio dates
 const formatDateRange = (start: string, end: string | null) => {
@@ -100,7 +138,7 @@ const formatDateRange = (start: string, end: string | null) => {
                         <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Filter projects</h2>
                         <div v-if="filters?.tag || filters?.techstack" class="flex">
                             <Link 
-                                href="/portfolio" 
+                                :href="portfolioRoute().url"
                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500 hover:text-white transition-all text-xs font-semibold"
                             >
                                 Clear Active Filters
@@ -109,26 +147,54 @@ const formatDateRange = (start: string, end: string | null) => {
                         </div>
                     </div>
 
+                    <div class="flex flex-wrap gap-2">
+                        <Link
+                            v-for="tag in filterOptions?.tags ?? []"
+                            :key="`tag-${tag.id}`"
+                            :href="filterUrl('tag', tag.name)"
+                            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-1.5 text-xs font-semibold text-slate-400 transition-colors hover:border-blue-500/40 hover:text-blue-300"
+                            :class="selectedValues(filters?.tag).includes(tag.name) ? 'border-blue-500/60 bg-blue-500/15 text-blue-300' : ''"
+                        >
+                            <TagIcon class="h-3.5 w-3.5" />
+                            {{ tag.name }}
+                        </Link>
+                        <Link
+                            v-for="techstack in filterOptions?.techstacks ?? []"
+                            :key="`techstack-${techstack.id}`"
+                            :href="filterUrl('techstack', techstack.name)"
+                            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-1.5 text-xs font-semibold text-slate-400 transition-colors hover:border-indigo-500/40 hover:text-indigo-300"
+                            :class="selectedValues(filters?.techstack).includes(techstack.name) ? 'border-indigo-500/60 bg-indigo-500/15 text-indigo-300' : ''"
+                        >
+                            <Code class="h-3.5 w-3.5" />
+                            {{ techstack.name }}
+                        </Link>
+                    </div>
+
                     <!-- Active Tag / Techstack Alert -->
                     <div v-if="filters?.tag || filters?.techstack" class="flex flex-wrap gap-2 items-center pt-2 text-xs">
                         <span class="text-slate-500 font-semibold uppercase tracking-wider">Active Filters:</span>
-                        <div v-if="filters?.tag" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/25 text-blue-400 font-medium">
+                        <div v-for="tag in selectedValues(filters?.tag)" :key="`active-tag-${tag}`" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/25 text-blue-400 font-medium">
                             <TagIcon class="w-3.5 h-3.5" />
-                            Tag: {{ filters.tag }}
+                            Tag: {{ tag }}
                         </div>
-                        <div v-if="filters?.techstack" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 font-medium">
+                        <div v-for="techstack in selectedValues(filters?.techstack)" :key="`active-techstack-${techstack}`" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 font-medium">
                             <Code class="w-3.5 h-3.5" />
-                            Techstack: {{ filters.techstack }}
+                            Techstack: {{ techstack }}
                         </div>
                     </div>
                 </div>
 
                 <!-- Portfolios Grid -->
-                <div v-if="portfolios?.data?.length" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+                <div v-if="portfolios?.data?.length" class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                     <div 
                         v-for="proj in portfolios.data" 
                         :key="proj.id"
-                        class="group flex flex-col overflow-hidden border border-slate-800/90 bg-slate-900/20 transition-colors duration-300 hover:border-slate-700"
+                        class="group flex cursor-pointer flex-col overflow-hidden border border-slate-800/90 bg-slate-900/20 transition-colors duration-300 hover:border-slate-700"
+                        role="link"
+                        tabindex="0"
+                        :aria-label="`View details for ${proj.title}`"
+                        @click="openPortfolio(proj.slug)"
+                        @keydown="handlePortfolioCardKeydown($event, proj.slug)"
                     >
                         <!-- Project Image / Icon -->
                         <div class="relative aspect-video w-full bg-slate-950 overflow-hidden border-b border-slate-900 flex items-center justify-center">
@@ -148,8 +214,8 @@ const formatDateRange = (start: string, end: string | null) => {
                         </div>
 
                         <!-- Project Information -->
-                        <div class="flex grow flex-col justify-between space-y-7 p-5 sm:p-6">
-                            <div class="space-y-3">
+                        <div class="flex grow flex-col justify-between space-y-5 p-4 sm:p-5">
+                            <div class="space-y-2.5">
                                 <div class="flex items-center justify-between text-xs text-slate-500">
                                     <span class="flex items-center gap-1">
                                         <Calendar class="w-3.5 h-3.5 text-slate-500" />
@@ -160,7 +226,7 @@ const formatDateRange = (start: string, end: string | null) => {
                                         {{ proj.tags[0].name }}
                                     </span>
                                 </div>
-                                <h3 class="text-xl font-semibold leading-snug text-white transition-colors group-hover:text-blue-400">
+                                <h3 class="text-lg font-semibold leading-snug text-white transition-colors group-hover:text-blue-400">
                                     {{ proj.title }}
                                 </h3>
                                 <p class="text-sm text-slate-400 line-clamp-3 leading-relaxed">
@@ -168,13 +234,15 @@ const formatDateRange = (start: string, end: string | null) => {
                                 </p>
                             </div>
 
-                            <div class="space-y-4">
+                            <div class="space-y-3">
                                 <!-- Tech tags -->
                                 <div v-if="proj.techstacks && proj.techstacks.length > 0" class="flex flex-wrap gap-1">
                                     <Link 
                                         v-for="ts in proj.techstacks.slice(0, 4)" 
                                         :key="ts.id"
-                                        :href="'/portfolio?techstack=' + encodeURIComponent(ts.name)"
+                                        :href="filterUrl('techstack', ts.name)"
+                                        @click.stop
+                                        @keydown.stop
                                         class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-950 border border-slate-800 hover:border-blue-500/30 text-slate-350 hover:text-white transition-colors"
                                     >
                                         {{ ts.name }}
@@ -187,10 +255,12 @@ const formatDateRange = (start: string, end: string | null) => {
                                 <!-- Read details CTA -->
                                 <div class="border-t border-slate-800/80 pt-4 flex items-center justify-between">
                                     <Link 
-                                        :href="'/portfolio/' + proj.id" 
+                                        :href="portfolioShow({ portfolio: proj.slug }).url"
+                                        @click.stop
+                                        @keydown.stop
                                         class="text-xs font-bold text-blue-400 hover:text-blue-300 inline-flex items-center gap-1 transition-colors"
                                     >
-                                        Read Project Case Study
+                                        Read Details
                                         <ArrowRight class="w-3.5 h-3.5" />
                                     </Link>
                                     
@@ -198,6 +268,8 @@ const formatDateRange = (start: string, end: string | null) => {
                                         v-if="proj.url" 
                                         :href="proj.url" 
                                         target="_blank" 
+                                        @click.stop
+                                        @keydown.stop
                                         class="text-slate-400 hover:text-white transition-colors"
                                         aria-label="Launch project site"
                                     >
@@ -230,7 +302,7 @@ const formatDateRange = (start: string, end: string | null) => {
                     </p>
                     <Link 
                         v-if="hasActiveFilters"
-                        href="/portfolio" 
+                        :href="portfolioRoute().url"
                         class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-xs text-slate-200 border border-slate-750"
                     >
                         Reset All Filters
