@@ -39,6 +39,7 @@ interface PortfolioImage {
 
 interface PortfolioItem {
     id: number;
+    slug: string;
     title: string;
     description: string | null;
     start_date: string | null;
@@ -91,9 +92,9 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
                 <header class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
                     <div class="space-y-5">
                         <div class="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-blue-400">
-                            <span v-if="portfolio.type" class="inline-flex items-center gap-1.5">
+                            <span v-if="portfolio.tags?.length" class="inline-flex items-center gap-1.5">
                                 <Folder class="h-4 w-4" />
-                                {{ portfolio.type.name }}
+                                {{ portfolio.tags?.[0]?.name }}
                             </span>
                             <span class="text-slate-700">/</span>
                             <span class="inline-flex items-center gap-1.5 text-slate-500">
@@ -208,7 +209,7 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
                         <Link
                             v-for="project in related"
                             :key="project.id"
-                            :href="portfolioShow(project.id).url"
+                            :href="portfolioShow({ slug: project.slug }).url"
                             class="group overflow-hidden rounded-xl border border-slate-800/80 bg-slate-900/25 transition-colors hover:border-blue-500/40"
                         >
                             <div class="aspect-video overflow-hidden bg-slate-950">
@@ -234,6 +235,3 @@ const dateRange = computed(() => `${formatDate(props.portfolio.start_date)} - ${
         </main>
     </PublicLayout>
 </template>
-
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus tempora labore sunt sit nostrum consequatur, at tempore minus ipsa dolores voluptas eos, quaerat aliquid voluptatem pariatur laborum earum fuga voluptatum! Ipsa neque, nam, inventore corrupti nisi repellat eaque ipsam temporibus explicabo ullam harum provident veniam a. Doloremque inventore minima debitis eligendi eaque, placeat quae ullam dicta commodi natus assumenda necessitatibus?

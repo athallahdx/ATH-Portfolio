@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
-use App\Models\PortfolioType;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
@@ -23,6 +22,7 @@ class PortfolioController extends Controller
                 'techstacks',
             ])
             ->where('is_active', true)
+            ->whereRelation('type', 'name', 'project')
             ->when($request->filled('tag'), function ($query) use ($request) {
                 $query->whereHas('tags', function ($query) use ($request) {
                     $query->where('name', $request->tag);
@@ -33,22 +33,14 @@ class PortfolioController extends Controller
                     $query->where('name', $request->techstack);
                 });
             })
-            ->when($request->filled('type'), function ($query) use ($request) {
-                $query->whereHas('type', function ($query) use ($request) {
-                    $query->where('name', $request->type);
-                });
-            })
             ->latest()
             ->paginate(9)
             ->withQueryString();
 
-        $types = PortfolioType::where('is_active', true)->get();
-
         return inertia('Portfolio', [
             'portfolios' => $portfolios,
             'hasActivePortfolios' => $hasActivePortfolios,
-            'types' => $types,
-            'filters' => $request->only(['tag', 'techstack', 'type']),
+            'filters' => $request->only(['tag', 'techstack']),
         ]);
     }
 

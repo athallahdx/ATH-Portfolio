@@ -23,12 +23,6 @@ interface TagItem {
     name: string;
 }
 
-interface PortfolioType {
-    id: number;
-    name: string;
-    description: string | null;
-}
-
 interface PortfolioItem {
     id: number;
     title: string;
@@ -36,7 +30,6 @@ interface PortfolioItem {
     start_date: string;
     end_date: string | null;
     url: string | null;
-    type?: PortfolioType;
     techstacks?: TechstackItem[];
     tags?: TagItem[];
     images?: {
@@ -62,16 +55,14 @@ interface PaginatedPortfolios {
 const props = defineProps<{
     portfolios?: PaginatedPortfolios;
     hasActivePortfolios?: boolean;
-    types?: PortfolioType[];
     filters?: {
         tag?: string;
         techstack?: string;
-        type?: string;
     };
 }>();
 
 const hasActiveFilters = computed(() => Boolean(
-    props.filters?.type || props.filters?.tag || props.filters?.techstack,
+    props.filters?.tag || props.filters?.techstack,
 ));
 
 // Formats portfolio dates
@@ -106,8 +97,8 @@ const formatDateRange = (start: string, end: string | null) => {
                 <!-- Filter Controls / Tags -->
                 <div class="mx-auto max-w-5xl space-y-5 border-y border-slate-800/80 px-1 py-5 sm:px-2">
                     <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-                        <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Filter by type</h2>
-                        <div v-if="filters?.type || filters?.tag || filters?.techstack" class="flex">
+                        <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Filter projects</h2>
+                        <div v-if="filters?.tag || filters?.techstack" class="flex">
                             <Link 
                                 href="/portfolio" 
                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500 hover:text-white transition-all text-xs font-semibold"
@@ -116,31 +107,6 @@ const formatDateRange = (start: string, end: string | null) => {
                                 <X class="w-3.5 h-3.5" />
                             </Link>
                         </div>
-                    </div>
-
-                    <!-- Type Filter Tabs -->
-                    <div class="flex flex-wrap gap-2 pt-2">
-                        <Link 
-                            href="/portfolio" 
-                            class="px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300"
-                            :class="!filters?.type 
-                                ? 'bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/20' 
-                                : 'bg-slate-950 border-slate-850 text-slate-400 hover:border-slate-700 hover:text-white'"
-                        >
-                            All Categories
-                        </Link>
-                        
-                        <Link 
-                            v-for="pType in types ?? []" 
-                            :key="pType.id"
-                            :href="'/portfolio?type=' + encodeURIComponent(pType.name)"
-                            class="px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300"
-                            :class="filters?.type === pType.name 
-                                ? 'bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/25' 
-                                : 'bg-slate-950 border-slate-850 text-slate-400 hover:border-slate-700 hover:text-white'"
-                        >
-                            {{ pType.name }}
-                        </Link>
                     </div>
 
                     <!-- Active Tag / Techstack Alert -->
@@ -177,7 +143,7 @@ const formatDateRange = (start: string, end: string | null) => {
                                 <span class="h-10 w-10 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                                     <Code class="w-5 h-5" />
                                 </span>
-                                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">{{ proj.type?.name ?? 'Application' }}</span>
+                                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">{{ proj.tags?.[0]?.name ?? 'Application' }}</span>
                             </div>
                         </div>
 
@@ -189,9 +155,9 @@ const formatDateRange = (start: string, end: string | null) => {
                                         <Calendar class="w-3.5 h-3.5 text-slate-500" />
                                         {{ formatDateRange(proj.start_date, proj.end_date) }}
                                     </span>
-                                    <span v-if="proj.type" class="flex items-center gap-1 font-semibold text-blue-400">
+                                    <span v-if="proj.tags?.[0]" class="flex items-center gap-1 font-semibold text-blue-400">
                                         <Folder class="w-3.5 h-3.5" />
-                                        {{ proj.type.name }}
+                                        {{ proj.tags[0].name }}
                                     </span>
                                 </div>
                                 <h3 class="text-xl font-semibold leading-snug text-white transition-colors group-hover:text-blue-400">
