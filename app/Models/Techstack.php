@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -36,6 +37,12 @@ class Techstack extends Model
 
     protected static function booted(): void
     {
+        static::creating(function (Techstack $techstack) {
+            if (!$techstack->slug) {
+                $techstack->slug = Str::slug($techstack->name);
+            }
+        });
+
         static::updating(function (Techstack $techstack) {
             if ($techstack->isDirty('icon')) {
                 $oldPath = $techstack->getOriginal('icon');
@@ -43,6 +50,10 @@ class Techstack extends Model
                 if ($oldPath) {
                     Storage::disk('public')->delete($oldPath);
                 }
+            }
+
+            if (!$techstack->slug) {
+                $techstack->slug = Str::slug($techstack->name);
             }
         });
 

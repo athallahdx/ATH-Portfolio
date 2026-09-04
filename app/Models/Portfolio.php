@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 
 /**
@@ -80,5 +82,20 @@ class Portfolio extends Model
     {
         return $this->belongsToMany(Tag::class, 'portfolio_tags')
             ->withTimestamps();
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Portfolio $portfolio) {
+            if (!$portfolio->slug) {
+                $portfolio->slug = Str::slug($portfolio->title);
+            }
+        });
+
+        static::updating(function (Portfolio $portfolio) {
+            if (!$portfolio->slug) {
+                $portfolio->slug = Str::slug($portfolio->title);
+            }
+        });
     }
 }
