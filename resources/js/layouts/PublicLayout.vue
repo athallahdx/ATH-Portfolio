@@ -9,7 +9,7 @@ import {
     PhoneCall
 } from '@lucide/vue';
 import { ref } from 'vue';
-import { home, portfolio, contact } from '@/routes';
+import { home, portfolio, work, contact } from '@/routes';
 
 interface ContactInfo {
     name: string;
@@ -51,7 +51,7 @@ const currentYear = new Date().getFullYear();
         <header class="sticky top-0 z-50 w-full border-b border-slate-800/70 bg-[#030712]/85 backdrop-blur-xl">
             <div class="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <Link :href="home().url" class="group z-50 flex min-w-0 items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#030712]">
-                    <img src="/favicon.svg" class="h-10 w-10 rounded-md m-0 shadow-lg shadow-blue-500/20 transition-transform duration-300 group-hover:scale-105" alt="web icon">
+                    <img src="/favicon.svg" class="h-10 w-10 rounded-md m-0 shadow-lg transition-transform duration-300 group-hover:scale-105" alt="web icon">
                     <span class="truncate text-base font-bold tracking-tight text-slate-100 transition-colors duration-300 group-hover:text-blue-400 sm:text-lg">
                         Athallah Tsany
                     </span>
@@ -64,7 +64,10 @@ const currentYear = new Date().getFullYear();
                     <Link :href="portfolio().url" class="relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" :class="isRouteActive('/portfolio') ? 'bg-blue-500/10 text-blue-400' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'">
                         Portfolio
                     </Link>
-                    <Link :href="contact().url" class="relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" :class="isRouteActive('/contact') ? 'bg-blue-500/10 text-blue-400' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'">
+                    <Link :href="work().url" class="relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" :class="isRouteActive('/works') ? 'bg-blue-500/10 text-blue-400' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'">
+                        Works
+                    </Link>
+                    <Link :href="contact().url" class="relative rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-300 transition-colors duration-300 hover:bg-cyan-400/20 hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400" :class="isRouteActive('/contact') ? 'bg-cyan-400/20 text-cyan-200' : ''">
                         Contact Me
                     </Link>
                 </nav>
@@ -80,6 +83,7 @@ const currentYear = new Date().getFullYear();
                     <nav class="mx-auto flex w-full max-w-7xl flex-col gap-1" aria-label="Mobile navigation">
                         <Link :href="home().url" @click="isMobileMenuOpen = false" class="flex min-h-12 items-center gap-3 rounded-xl px-4 text-base font-medium transition-colors" :class="isRouteActive('/') ? 'bg-blue-500/10 text-blue-400' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'"><HomeIcon class="h-5 w-5" />Home</Link>
                         <Link :href="portfolio().url" @click="isMobileMenuOpen = false" class="flex min-h-12 items-center gap-3 rounded-xl px-4 text-base font-medium transition-colors" :class="isRouteActive('/portfolio') ? 'bg-blue-500/10 text-blue-400' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'"><Briefcase class="h-5 w-5" />Portfolio</Link>
+                        <Link :href="work().url" @click="isMobileMenuOpen = false" class="flex min-h-12 items-center gap-3 rounded-xl px-4 text-base font-medium transition-colors" :class="isRouteActive('/works') ? 'bg-blue-500/10 text-blue-400' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'"><DocumentText class="h-5 w-5" />Works</Link>
                         <Link :href="contact().url" @click="isMobileMenuOpen = false" class="flex min-h-12 items-center gap-3 rounded-xl px-4 text-base font-medium transition-colors" :class="isRouteActive('/contact') ? 'bg-blue-500/10 text-blue-400' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white'"><PhoneCall class="h-5 w-5" />Contact Me</Link>
                     </nav>
                 </div>
@@ -95,7 +99,7 @@ const currentYear = new Date().getFullYear();
                 <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
                     <div class="space-y-5 sm:col-span-2">
                         <Link :href="home().url" class="group flex w-fit items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                            <img src="/favicon.svg" class="h-10 w-10 rounded-md m-0 shadow-lg shadow-blue-500/20 transition-transform duration-300 group-hover:scale-105" alt="web icon">
+                            <img src="/favicon.svg" class="h-10 w-10 rounded-md m-0 shadow-lg transition-transform duration-300 group-hover:scale-105" alt="web icon">
                             <span class="text-base font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-blue-400 sm:text-lg">Athallah Tsany Satriyaji</span>
                         </Link>
                         <p class="max-w-md text-sm leading-6 text-slate-400 sm:text-[15px]">
@@ -107,6 +111,7 @@ const currentYear = new Date().getFullYear();
                         <ul class="flex flex-col gap-3">
                             <li><Link :href="home().url" class="text-sm text-slate-400 transition-colors duration-200 hover:text-white">Home</Link></li>
                             <li><Link :href="portfolio().url" class="text-sm text-slate-400 transition-colors duration-200 hover:text-white">Portfolio</Link></li>
+                            <li><Link :href="work().url" class="text-sm text-slate-400 transition-colors duration-200 hover:text-white">Works</Link></li>
                             <li><Link :href="contact().url" class="text-sm text-slate-400 transition-colors duration-200 hover:text-white">Contact</Link></li>
                         </ul>
                     </div>
