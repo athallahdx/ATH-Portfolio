@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -35,5 +36,20 @@ class Tag extends Model
     {
         return $this->belongsToMany(Portfolio::class, 'portfolio_tags')
             ->withTimestamps();
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Tag $tag) {
+            if (!$tag->slug) {
+                $tag->slug = Str::slug($tag->name);
+            }
+        });
+
+        static::updating(function (Tag $tag) {
+            if (!$tag->slug) {
+                $tag->slug = Str::slug($tag->name);
+            }
+        });
     }
 }
