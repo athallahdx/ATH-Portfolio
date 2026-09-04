@@ -51,7 +51,7 @@ const currentYear = new Date().getFullYear();
         <header class="sticky top-0 z-50 w-full border-b border-slate-800/70 bg-[#030712]/85 backdrop-blur-xl">
             <div class="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <Link :href="home().url" class="group z-50 flex min-w-0 items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#030712]">
-                    <img src="/favicon.svg" class="h-10 w-10 rounded-md m-0" alt="web icon">
+                    <img src="/favicon.svg" class="h-10 w-10 rounded-md m-0 shadow-lg shadow-blue-500/20 transition-transform duration-300 group-hover:scale-105" alt="web icon">
                     <span class="truncate text-base font-bold tracking-tight text-slate-100 transition-colors duration-300 group-hover:text-blue-400 sm:text-lg">
                         Athallah Tsany
                     </span>
@@ -95,7 +95,7 @@ const currentYear = new Date().getFullYear();
                 <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
                     <div class="space-y-5 sm:col-span-2">
                         <Link :href="home().url" class="group flex w-fit items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-blue-600 to-indigo-500 font-bold text-white shadow-lg shadow-blue-500/20 transition-transform duration-300 group-hover:scale-105">A</span>
+                            <img src="/favicon.svg" class="h-10 w-10 rounded-md m-0 shadow-lg shadow-blue-500/20 transition-transform duration-300 group-hover:scale-105" alt="web icon">
                             <span class="text-base font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-blue-400 sm:text-lg">Athallah Tsany Satriyaji</span>
                         </Link>
                         <p class="max-w-md text-sm leading-6 text-slate-400 sm:text-[15px]">
