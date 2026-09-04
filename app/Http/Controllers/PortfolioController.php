@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
+use App\Models\Tag;
+use App\Models\Techstack;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
@@ -25,22 +28,43 @@ class PortfolioController extends Controller
             ->whereRelation('type', 'name', 'project')
             ->when($request->filled('tag'), function ($query) use ($request) {
                 $query->whereHas('tags', function ($query) use ($request) {
-                    $query->where('name', $request->tag);
+                    $query->whereIn('name', (array) $request->input('tag'));
                 });
             })
             ->when($request->filled('techstack'), function ($query) use ($request) {
                 $query->whereHas('techstacks', function ($query) use ($request) {
-                    $query->where('name', $request->techstack);
+                    $query->whereIn('name', (array) $request->input('techstack'));
                 });
             })
             ->latest()
             ->paginate(9)
             ->withQueryString();
 
+        $projectFilter = fn (Builder $query): Builder => $query
+            ->where('is_active', true)
+            ->whereRelation('type', 'name', 'project');
+
+        $tags = Tag::query()
+            ->whereHas('portfolios', $projectFilter)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        $techstacks = Techstack::query()
+            ->whereHas('portfolios', $projectFilter)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
         return inertia('Portfolio', [
             'portfolios' => $portfolios,
             'hasActivePortfolios' => $hasActivePortfolios,
-            'filters' => $request->only(['tag', 'techstack']),
+            'filters' => [
+                'tag' => array_values(array_filter((array) $request->input('tag'))),
+                'techstack' => array_values(array_filter((array) $request->input('techstack'))),
+            ],
+            'filterOptions' => [
+                'tags' => $tags,
+                'techstacks' => $techstacks,
+            ],
         ]);
     }
 

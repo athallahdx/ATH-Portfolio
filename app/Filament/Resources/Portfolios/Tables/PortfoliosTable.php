@@ -20,6 +20,11 @@ class PortfoliosTable
                 TextColumn::make('type.name')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('tags.name')
+                    ->label('Tags')
+                    ->badge()
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('start_date')
                     ->date()
                     ->sortable(),

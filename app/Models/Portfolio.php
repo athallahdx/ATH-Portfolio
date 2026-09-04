@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property string $title
  * @property string|null $slug
  * @property string|null $description
+ * @property string|null $client
  * @property Carbon|null $start_date    
  * @property Carbon|null $end_date
  * @property string|null $url
@@ -36,6 +37,7 @@ class Portfolio extends Model
         'title',
         'slug',
         'description',
+        'client',
         'start_date',
         'end_date',
         'url',

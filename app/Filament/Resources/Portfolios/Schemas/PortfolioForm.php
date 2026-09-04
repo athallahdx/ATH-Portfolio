@@ -35,6 +35,10 @@ class PortfolioForm
                         Textarea::make('description')
                             ->rows(4)
                             ->columnSpanFull(),
+
+                        TextInput::make('client')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
                     ]),
 
                 // Project Timeline Section

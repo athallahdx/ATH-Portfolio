@@ -15,8 +15,16 @@ class HomeController extends Controller
 {
     public function index(): Response
     {
-        $portfolios = Portfolio::with(['techstacks', 'images', 'type'])
+        $projectPortfolios = Portfolio::with(['techstacks', 'images', 'type'])
             ->where('is_active', true)
+            ->whereRelation('type', 'name', 'project')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $workPortfolios = Portfolio::with(['tags', 'images', 'type'])
+            ->where('is_active', true)
+            ->whereRelation('type', 'name', 'work')
             ->latest()
             ->take(3)
             ->get();
@@ -37,7 +45,8 @@ class HomeController extends Controller
             'hero' => $hero,
             'aboutme' => $aboutme,
             'curriculumvitae' => $curriculumvitae,
-            'portfolios' => $portfolios,
+            'portfolios' => $projectPortfolios,
+            'works' => $workPortfolios,
             'expertises' => $expertises,
             'techstacks' => $techstacks,
             'contact' => $contact,
